@@ -1,3 +1,5 @@
+import CookieToaster from "@/components/ui/cookie-toaster";
+import { Toaster } from "@/components/ui/sonner";
 import type { Metadata } from "next";
 import "./globals.css";
 
@@ -14,7 +16,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className="antialiased">{children}</body>
+      <body className="antialiased">
+        <main>{children}</main>
+        <Toaster closeButton expand richColors />
+        <CookieToaster />
+      </body>
     </html>
   );
 }
