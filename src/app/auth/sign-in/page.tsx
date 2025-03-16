@@ -9,9 +9,9 @@ import {
 import * as motion from "motion/react-client";
 import Image from "next/image";
 import Link from "next/link";
-import SignUpForm from "./_components/sign-up-form";
+import SignInForm from "./_components/sign-in-form";
 
-export default function SignUpPage() {
+export default function SignInPage() {
   return (
     <div className="relative flex min-h-screen min-w-screen items-center justify-center xl:justify-end bg-red-300">
       <motion.div
@@ -41,7 +41,7 @@ export default function SignUpPage() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.25, delay: 0.5 }}
             >
-              <CardTitle className="text-3xl">Sign Up</CardTitle>
+              <CardTitle className="text-3xl">Sign In</CardTitle>
             </motion.div>
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -49,12 +49,12 @@ export default function SignUpPage() {
               transition={{ duration: 0.25, delay: 0.6 }}
             >
               <CardDescription className="text-gray-400">
-                Join us for the latest news on Indian travel & tourism
+                Sign in with your account to continue
               </CardDescription>
             </motion.div>
           </CardHeader>
           <CardContent>
-            <SignUpForm />
+            <SignInForm />
           </CardContent>
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -62,9 +62,9 @@ export default function SignUpPage() {
             transition={{ duration: 0.25, delay: 1.1 }}
           >
             <CardFooter className="flex justify-start gap-2 text-center">
-              <div>Already have an account?</div>
-              <Link className="text-orange-400" href="/auth/sign-in">
-                Sign In
+              <div>Don&apos;t have an account?</div>
+              <Link className="text-orange-400" href="/auth/sign-up">
+                Sign Up
               </Link>
             </CardFooter>
           </motion.div>
