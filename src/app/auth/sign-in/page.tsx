@@ -13,7 +13,7 @@ import SignInForm from "./_components/sign-in-form";
 
 export default function SignInPage() {
   return (
-    <div className="relative flex min-h-screen min-w-screen items-center justify-center xl:justify-end bg-red-300">
+    <div className="relative flex min-h-screen min-w-screen items-center justify-center bg-red-300 xl:justify-end">
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
@@ -34,7 +34,7 @@ export default function SignInPage() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, delay: 0.2 }}
       >
-        <Card className="border-0 bg-black/60 text-white shadow-2xl backdrop-blur-3xl  md:px-8 md:py-16">
+        <Card className="border-0 bg-black/60 text-white shadow-2xl backdrop-blur-3xl md:px-8 md:py-16">
           <CardHeader className="items-center text-center">
             <motion.div
               initial={{ opacity: 0, y: 20 }}

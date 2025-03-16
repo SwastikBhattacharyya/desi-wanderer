@@ -8,7 +8,7 @@ export default async function VerifyEmailPage({
 }) {
   const { email } = await searchParams;
   return (
-    <div className="flex min-h-screen min-w-screen flex-col items-center justify-center gap-1 text-2xl">
+    <div className="flex min-h-screen min-w-screen flex-col items-center justify-center gap-1">
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
@@ -23,7 +23,7 @@ export default async function VerifyEmailPage({
           sizes="100vw"
         />
       </motion.div>
-      <motion.div className="z-10 bg-black/60 p-16 text-white backdrop-blur-md shadow-2xl rounded-2xl">
+      <motion.div className="text-md z-10 w-[90%] rounded-2xl bg-black/60 p-4 text-center text-white shadow-2xl backdrop-blur-md md:p-8 lg:p-16 lg:text-2xl">
         <div>
           A verification email has been sent to{" "}
           <span className="font-bold">{email}</span>.
