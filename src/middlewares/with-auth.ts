@@ -12,7 +12,7 @@ export const withAuth: MiddlewareFactory = (next) => {
     const authResponse = await auth.api.getSession({
       headers: await headers(),
     });
-    if (authResponse != null) {
+    if (authResponse) {
       const response = NextResponse.redirect(new URL("/", request.url));
       const toastObj: Toast = {
         level: "info",
