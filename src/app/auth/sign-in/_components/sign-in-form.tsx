@@ -13,6 +13,7 @@ import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Loader2 } from "lucide-react";
 import * as motion from "motion/react-client";
+import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { signIn } from "../actions";
@@ -26,6 +27,7 @@ export default function SignInForm() {
       password: "",
     },
   });
+  const router = useRouter();
 
   async function onSubmit(formData: User) {
     const response = await signIn(formData);
@@ -38,6 +40,7 @@ export default function SignInForm() {
       return;
     }
     toast.success("Signed in succesfully");
+    router.push("/");
   }
 
   return (

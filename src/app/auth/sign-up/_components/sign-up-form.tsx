@@ -13,6 +13,7 @@ import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Loader2 } from "lucide-react";
 import * as motion from "motion/react-client";
+import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { signUp } from "../actions";
@@ -27,6 +28,7 @@ export default function SignUpForm() {
       password: "",
     },
   });
+  const router = useRouter();
 
   async function onSubmit(formData: User) {
     const response = await signUp(formData);
@@ -37,6 +39,7 @@ export default function SignUpForm() {
     toast.success(
       "Signed up successfully. Please check your email to verify your account.",
     );
+    router.push(`/auth/verify-email?email=${formData.email}`);
   }
 
   return (
