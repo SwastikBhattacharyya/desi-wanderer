@@ -35,10 +35,6 @@ export default function SignInForm() {
       toast.error(response.error);
       return;
     }
-    if (response?.errorInfo) {
-      toast.info(response.errorInfo);
-      return;
-    }
     toast.success("Signed in succesfully");
     router.push("/");
   }
