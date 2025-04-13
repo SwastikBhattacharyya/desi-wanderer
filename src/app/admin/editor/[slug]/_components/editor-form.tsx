@@ -18,9 +18,10 @@ import { useEditor } from "@tiptap/react";
 import { StarterKit } from "@tiptap/starter-kit";
 import { Loader2 } from "lucide-react";
 import * as motion from "motion/react-client";
+import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
-import { updatePost } from "../actions";
+import { deletePost, updatePost } from "../actions";
 import { Post, postSchema } from "../types";
 
 type EditorFormProps = {
@@ -56,7 +57,9 @@ export default function EditorForm(props: EditorFormProps) {
     immediatelyRender: false,
   });
 
-  async function onSubmit(formData: Post) {
+  const router = useRouter();
+
+  async function onUpdate(formData: Post) {
     const content = editor?.getHTML();
 
     if (!content) {
@@ -74,12 +77,18 @@ export default function EditorForm(props: EditorFormProps) {
     else toast.success("Post updated successfully");
   }
 
+  async function onDelete() {
+    const response = await deletePost(props.slug);
+    if (response?.error) toast.error(response.error);
+    else {
+      toast.success("Post deleted successfully");
+      router.push("/admin");
+    }
+  }
+
   return (
     <Form {...form}>
-      <form
-        className="flex h-full flex-col gap-y-6"
-        onSubmit={form.handleSubmit(onSubmit)}
-      >
+      <form id="editor-form" className="flex h-full flex-col gap-y-6">
         <div className="flex w-full flex-col gap-y-3">
           <FormField
             control={form.control}
@@ -154,9 +163,21 @@ export default function EditorForm(props: EditorFormProps) {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.25, delay: 1.0 }}
           >
-            <Button className="cursor-pointer bg-red-600 transition-colors hover:bg-red-700">
-              Delete
-            </Button>
+            {!form.formState.isSubmitting ? (
+              <Button
+                form="editor-form"
+                onClick={form.handleSubmit(onDelete)}
+                className="cursor-pointer bg-red-600 transition-colors hover:bg-red-700"
+                value="delete"
+              >
+                Delete
+              </Button>
+            ) : (
+              <Button disabled className="w-full cursor-not-allowed">
+                <Loader2 className="animate-spin" />
+                Please wait...
+              </Button>
+            )}
           </motion.div>
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -165,8 +186,11 @@ export default function EditorForm(props: EditorFormProps) {
           >
             {!form.formState.isSubmitting ? (
               <Button
+                form="editor-form"
+                onClick={form.handleSubmit(onUpdate)}
                 className="cursor-pointer transition-colors"
                 type="submit"
+                value="update"
               >
                 Submit
               </Button>
