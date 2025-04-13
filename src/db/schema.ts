@@ -68,3 +68,12 @@ export const post = pgTable("post", {
     .defaultNow()
     .$onUpdate(() => new Date()),
 });
+
+export const image = pgTable("image", {
+  url: text("url").notNull(),
+  ownerId: text("owner_id")
+    .notNull()
+    .references(() => user.id, { onDelete: "cascade" }),
+  alt: text("alt").notNull(),
+  createdAt: timestamp("created_at").notNull().defaultNow(),
+});

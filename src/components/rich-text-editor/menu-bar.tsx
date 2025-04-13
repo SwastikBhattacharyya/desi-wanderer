@@ -10,13 +10,24 @@ import {
   Heading1,
   Heading2,
   Heading3,
+  Image as ImageIcon,
   Italic,
   List,
   ListOrdered,
   Strikethrough,
 } from "lucide-react";
 
-export default function MenuBar({ editor }: { editor: Editor | null }) {
+type MenuBarProps = {
+  editor: Editor | null;
+  isImageWindowOpen: boolean;
+  setIsImageWindowOpen: (isOpen: boolean) => void;
+};
+
+export default function MenuBar({
+  editor,
+  isImageWindowOpen,
+  setIsImageWindowOpen,
+}: MenuBarProps) {
   if (!editor) {
     return null;
   }
@@ -82,21 +93,30 @@ export default function MenuBar({ editor }: { editor: Editor | null }) {
       onClick: () => editor.chain().focus().toggleOrderedList().run(),
       pressed: editor.isActive("orderedList"),
     },
+    {
+      icon: <ImageIcon className="size-4" />,
+      onClick: () => setIsImageWindowOpen(!isImageWindowOpen),
+      pressed: false,
+    },
   ];
 
   return (
     <div className="mb-1 space-x-2 rounded-md border bg-slate-50 p-1">
       {options.map((option, index) => (
         <Toggle
+          disabled={isImageWindowOpen}
           key={index}
           className={cn(
-            "rounded-md bg-slate-50 p-2 hover:bg-slate-200 focus:bg-slate-200 focus:outline-none",
+            "cursor-pointer rounded-md bg-slate-50 p-2 hover:bg-slate-200 focus:bg-slate-200 focus:outline-none",
             {
               "bg-slate-300 hover:bg-slate-300 focus:bg-slate-300":
                 option.pressed,
             },
+            {
+              "hover:bg-slate-50": isImageWindowOpen && !option.pressed,
+            },
           )}
-          onClick={option.onClick}
+          onClick={() => !isImageWindowOpen && option.onClick()}
           pressed={option.pressed}
         >
           {option.icon}

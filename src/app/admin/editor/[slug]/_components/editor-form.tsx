@@ -13,12 +13,13 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { TextAlign } from "@tiptap/extension-text-align";
+import TextAlign from "@tiptap/extension-text-align";
 import { useEditor } from "@tiptap/react";
-import { StarterKit } from "@tiptap/starter-kit";
+import StarterKit from "@tiptap/starter-kit";
 import { Loader2 } from "lucide-react";
 import * as motion from "motion/react-client";
 import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { deletePost, updatePost } from "../actions";
@@ -29,6 +30,8 @@ type EditorFormProps = {
   title: string;
   description: string;
   content: string;
+  isImageWindowOpen: boolean;
+  setIsImageWindowOpen: (isOpen: boolean) => void;
 };
 
 export default function EditorForm(props: EditorFormProps) {
@@ -39,6 +42,8 @@ export default function EditorForm(props: EditorFormProps) {
       description: props.description,
     },
   });
+
+  const { isImageWindowOpen, setIsImageWindowOpen } = props;
 
   const editor = useEditor({
     extensions: [
@@ -56,6 +61,10 @@ export default function EditorForm(props: EditorFormProps) {
     },
     immediatelyRender: false,
   });
+
+  useEffect(() => {
+    editor?.setEditable(!isImageWindowOpen);
+  }, [isImageWindowOpen, editor]);
 
   const router = useRouter();
 
@@ -103,6 +112,7 @@ export default function EditorForm(props: EditorFormProps) {
                   <FormLabel className="text-md font-bold">Title</FormLabel>
                   <FormControl>
                     <Input
+                      disabled={isImageWindowOpen}
                       className="bg-slate-50 selection:bg-orange-500 placeholder:text-gray-400"
                       type="text"
                       placeholder="Post Title"
@@ -129,6 +139,7 @@ export default function EditorForm(props: EditorFormProps) {
                   </FormLabel>
                   <FormControl>
                     <Input
+                      disabled={isImageWindowOpen}
                       className="bg-slate-50 selection:bg-orange-500 placeholder:text-gray-400"
                       type="text"
                       placeholder="Post Description"
@@ -150,7 +161,11 @@ export default function EditorForm(props: EditorFormProps) {
           <FormItem className="flex h-full min-h-[300px] flex-col gap-y-1">
             <FormControl>
               <div className="flex h-full flex-col">
-                <MenuBar editor={editor} />
+                <MenuBar
+                  editor={editor}
+                  isImageWindowOpen={isImageWindowOpen}
+                  setIsImageWindowOpen={setIsImageWindowOpen}
+                />
                 <RichTextEditor editor={editor} />
               </div>
             </FormControl>
@@ -165,6 +180,7 @@ export default function EditorForm(props: EditorFormProps) {
           >
             {!form.formState.isSubmitting ? (
               <Button
+                disabled={isImageWindowOpen}
                 form="editor-form"
                 onClick={form.handleSubmit(onDelete)}
                 className="cursor-pointer bg-red-600 transition-colors hover:bg-red-700"
@@ -186,6 +202,7 @@ export default function EditorForm(props: EditorFormProps) {
           >
             {!form.formState.isSubmitting ? (
               <Button
+                disabled={isImageWindowOpen}
                 form="editor-form"
                 onClick={form.handleSubmit(onUpdate)}
                 className="cursor-pointer transition-colors"
