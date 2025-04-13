@@ -19,14 +19,23 @@ import { StarterKit } from "@tiptap/starter-kit";
 import { Loader2 } from "lucide-react";
 import * as motion from "motion/react-client";
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
+import { updatePost } from "../actions";
 import { Post, postSchema } from "../types";
 
-export default function EditorForm() {
+type EditorFormProps = {
+  slug: string;
+  title: string;
+  description: string;
+  content: string;
+};
+
+export default function EditorForm(props: EditorFormProps) {
   const form = useForm<Post>({
     resolver: zodResolver(postSchema),
     defaultValues: {
-      title: "",
-      description: "",
+      title: props.title,
+      description: props.description,
     },
   });
 
@@ -37,7 +46,7 @@ export default function EditorForm() {
         types: ["heading", "paragraph"],
       }),
     ],
-    content: "<p>Write your content here</p>",
+    content: props.content,
     editorProps: {
       attributes: {
         class:
@@ -49,11 +58,20 @@ export default function EditorForm() {
 
   async function onSubmit(formData: Post) {
     const content = editor?.getHTML();
+
+    if (!content) {
+      toast.error("Please write some content");
+      return;
+    }
+
     const data = {
       ...formData,
+      slug: props.slug,
       content,
     };
-    console.log("Form Data: ", data);
+    const response = await updatePost(data);
+    if (response?.error) toast.error(response.error);
+    else toast.success("Post updated successfully");
   }
 
   return (

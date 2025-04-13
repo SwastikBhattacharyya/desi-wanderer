@@ -1,8 +1,37 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { db } from "@/db";
+import { post } from "@/db/schema";
+import { eq } from "drizzle-orm";
 import * as motion from "motion/react-client";
+import { notFound } from "next/navigation";
 import EditorForm from "./_components/editor-form";
 
-export default function EditorPage() {
+export async function generateStaticParams() {
+  const posts = await db.select().from(post);
+  return posts.map((post) => ({
+    slug: post.slug,
+  }));
+}
+
+export default async function EditorPage({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}) {
+  const { slug } = await params;
+  const postData = await db.select().from(post).where(eq(post.slug, slug));
+
+  if (postData.length === 0) notFound();
+
+  const { title, description, content } = postData[0];
+
+  const editorData = {
+    slug,
+    title,
+    description,
+    content,
+  };
+
   return (
     <motion.div
       className="flex min-h-screen min-w-screen p-10"
@@ -21,7 +50,7 @@ export default function EditorPage() {
           </motion.div>
         </CardHeader>
         <CardContent className="h-full">
-          <EditorForm />
+          <EditorForm {...editorData} />
         </CardContent>
       </Card>
     </motion.div>
