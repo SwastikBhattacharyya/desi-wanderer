@@ -1,163 +1,24 @@
-"use client";
+import { db } from "@/db";
+import { image } from "@/db/schema";
+import { auth } from "@/lib/auth";
+import { desc, eq } from "drizzle-orm";
+import { headers } from "next/headers";
+import ImageSelectorCard from "./image-selector-card";
 
-import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-} from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { cn } from "@/lib/utils";
-import { X } from "lucide-react";
-import { AnimatePresence } from "motion/react";
-import * as motion from "motion/react-client";
-import { useEffect, useRef, useState } from "react";
-import { toast } from "sonner";
-import { useEditorContext } from "../_contexts/editor-context";
-import { deleteImage, uploadImage } from "../actions";
+export default async function ImageSelector() {
+  const session = await auth.api.getSession({
+    headers: await headers(),
+  });
+  if (!session?.user?.id) return <></>;
 
-export default function ImageSelector({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
-  const {
-    isImageSelectorOpen,
-    setIsImageSelectorOpen,
-    imageSelected,
-    setImageSelected,
-  } = useEditorContext();
-  const altRef = useRef<HTMLInputElement>(null);
-  const [isBusy, setIsBusy] = useState(false);
-  const cardRef = useRef<HTMLDivElement>(null);
+  const images = await db
+    .select({
+      url: image.url,
+      alt: image.alt,
+    })
+    .from(image)
+    .where(eq(image.ownerId, session?.user?.id))
+    .orderBy(desc(image.createdAt));
 
-  useEffect(() => {
-    function handleEscape(event: KeyboardEvent) {
-      if (event.key === "Escape") setIsImageSelectorOpen(false);
-    }
-
-    document.addEventListener("keydown", handleEscape);
-    return () => {
-      document.removeEventListener("keydown", handleEscape);
-    };
-  }, [isImageSelectorOpen, setIsImageSelectorOpen]);
-
-  async function onUploadImage(event: React.ChangeEvent<HTMLInputElement>) {
-    const imageFile = event.target.files?.[0];
-    const altText = altRef.current?.value;
-    altRef.current!.value = "";
-    if (!altText) {
-      toast.error("Please provide alt text for the image");
-      return;
-    }
-    setIsBusy(true);
-    const response = await uploadImage(imageFile, altText);
-    if (response?.error) toast.error(response.error);
-    else toast.success("Image uploaded successfully");
-    setIsBusy(false);
-  }
-
-  async function onDeleteImage() {
-    if (imageSelected === "") {
-      toast.error("Please select an image to delete");
-      return;
-    }
-    setIsBusy(true);
-    const response = await deleteImage(imageSelected);
-    if (response?.error) toast.error(response.error);
-    else toast.success("Image deleted successfully");
-    setImageSelected("");
-    setIsBusy(false);
-  }
-
-  return (
-    <div
-      className={cn("sticky top-0 flex h-screen items-center justify-center", {
-        "z-10": isImageSelectorOpen,
-      })}
-    >
-      <AnimatePresence>
-        {isImageSelectorOpen && (
-          <motion.div
-            ref={cardRef}
-            className="h-[75vh] w-[90%] lg:w-[50%]"
-            initial={{
-              opacity: 0,
-            }}
-            animate={{
-              opacity: 1,
-            }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.25 }}
-          >
-            <Card className="h-full w-full bg-white shadow-2xl">
-              <CardHeader className="flex w-full items-center justify-between">
-                <div className="text-2xl font-bold">Select Image</div>
-                <div>
-                  <X
-                    className="cursor-pointer"
-                    onClick={() => setIsImageSelectorOpen(false)}
-                  />
-                </div>
-              </CardHeader>
-              <CardContent className="h-full overflow-y-scroll py-2">
-                {children}
-              </CardContent>
-              <CardFooter className="flex w-full justify-between gap-y-2">
-                <div className="flex w-[50%] flex-col gap-2 sm:flex-row">
-                  <Input
-                    disabled={isBusy}
-                    ref={altRef}
-                    placeholder="Alt Text"
-                  />
-                  <input
-                    className="hidden"
-                    id="image"
-                    name="image"
-                    type="file"
-                    accept="image/*"
-                    onChange={onUploadImage}
-                  />
-                  <label
-                    onClick={(e) => {
-                      if (altRef.current!.value === "") {
-                        e.preventDefault();
-                        e.stopPropagation();
-                        toast.error("Please provide alt text for the image");
-                      }
-                    }}
-                    htmlFor="image"
-                    className="cursor-pointer"
-                  >
-                    <Button
-                      className="pointer-events-none w-full"
-                      disabled={isBusy}
-                    >
-                      Upload Image
-                    </Button>
-                  </label>
-                </div>
-                <div className="flex flex-col gap-2 sm:flex-row">
-                  <Button
-                    disabled={isBusy}
-                    onClick={onDeleteImage}
-                    className="cursor-pointer bg-red-700 hover:bg-red-800"
-                  >
-                    Delete
-                  </Button>
-                  <Button
-                    disabled={isBusy}
-                    className="cursor-pointer bg-green-700 hover:bg-green-800"
-                  >
-                    Submit
-                  </Button>
-                </div>
-              </CardFooter>
-            </Card>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </div>
-  );
+  return <ImageSelectorCard images={images} />;
 }

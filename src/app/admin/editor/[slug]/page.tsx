@@ -3,7 +3,6 @@ import { post } from "@/db/schema";
 import { Loader2 } from "lucide-react";
 import * as motion from "motion/react-client";
 import { Suspense } from "react";
-import ImageGrid from "./_components/image-grid";
 import ImageSelector from "./_components/image-selector";
 import RichTextEditor from "./_components/rich-text-editor";
 import { EditorProvider } from "./_contexts/editor-context";
@@ -25,18 +24,9 @@ export default async function EditorPage({
   return (
     <EditorProvider>
       <div className="absolute h-full w-full">
-        <ImageSelector>
-          <Suspense
-            fallback={
-              <div className="flex h-full w-full flex-col items-center justify-center gap-y-2 text-center text-3xl font-bold">
-                <div>Loading Images</div>
-                <Loader2 className="animate-spin" />
-              </div>
-            }
-          >
-            <ImageGrid />
-          </Suspense>
-        </ImageSelector>
+        <Suspense>
+          <ImageSelector />
+        </Suspense>
       </div>
 
       <motion.div
