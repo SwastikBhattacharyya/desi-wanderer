@@ -50,10 +50,6 @@ export default function EditorForm(props: EditorFormProps) {
     editor?.setEditable(!isImageWindowOpen);
   }, [isImageWindowOpen, editor]);
 
-  useEffect(() => {
-    editor?.commands.setContent(props.content);
-  }, [editor, props.content]);
-
   const router = useRouter();
 
   async function onUpdate(formData: Post) {

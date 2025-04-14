@@ -32,8 +32,9 @@ export default function ImageGridView({
             )}
             onClick={() => {
               if (image.url === "uploading") return;
-              if (imageSelected === image.url) setImageSelected("");
-              else setImageSelected(image.url);
+              if (imageSelected.url === image.url)
+                setImageSelected({ url: "", alt: "" });
+              else setImageSelected({ url: image.url, alt: image.alt });
             }}
             width={250}
             height={250}
@@ -41,7 +42,7 @@ export default function ImageGridView({
             alt={image.alt}
           />
           <AnimatePresence>
-            {imageSelected === image.url && (
+            {imageSelected.url === image.url && (
               <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}

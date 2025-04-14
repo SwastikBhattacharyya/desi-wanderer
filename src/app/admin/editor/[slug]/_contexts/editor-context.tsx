@@ -1,39 +1,30 @@
 "use client";
 
-import TextAlign from "@tiptap/extension-text-align";
-import { Editor, useEditor } from "@tiptap/react";
-import StarterKit from "@tiptap/starter-kit";
+import { Editor } from "@tiptap/react";
 import { createContext, useContext, useState } from "react";
+import "tiptap-extension-resizable-image/styles.css";
 
 type EditorContextType = {
   editor: Editor | null;
   isImageSelectorOpen: boolean;
-  imageSelected: string;
+  imageSelected: { url: string; alt: string };
+  setEditor: (editor: Editor | null) => void;
   setIsImageSelectorOpen: (isOpen: boolean) => void;
-  setImageSelected: (url: string) => void;
+  setImageSelected: (image: { url: string; alt: string }) => void;
+};
+
+export type ImageAttributes = {
+  src: string;
+  alt?: string;
+  style?: string;
 };
 
 const EditorContext = createContext<EditorContextType | null>(null);
 
 export function EditorProvider({ children }: { children: React.ReactNode }) {
+  const [editor, setEditor] = useState<Editor | null>(null);
   const [isImageSelectorOpen, setIsImageSelectorOpen] = useState(false);
-  const [imageSelected, setImageSelected] = useState("");
-  const editor = useEditor({
-    extensions: [
-      StarterKit,
-      TextAlign.configure({
-        types: ["heading", "paragraph"],
-      }),
-    ],
-    content: "",
-    editorProps: {
-      attributes: {
-        class:
-          "p-4 bg-slate-50 rounded-md outline-none border focus:border-black transition-colors duration-300 h-[100%] selection:bg-orange-500 selection:text-white",
-      },
-    },
-    immediatelyRender: false,
-  });
+  const [imageSelected, setImageSelected] = useState({ url: "", alt: "" });
 
   return (
     <EditorContext.Provider
@@ -41,6 +32,7 @@ export function EditorProvider({ children }: { children: React.ReactNode }) {
         editor,
         isImageSelectorOpen: isImageSelectorOpen,
         imageSelected,
+        setEditor,
         setIsImageSelectorOpen: setIsImageSelectorOpen,
         setImageSelected,
       }}

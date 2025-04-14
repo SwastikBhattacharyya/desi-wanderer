@@ -8,11 +8,24 @@ import {
   CardHeader,
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { cn } from "@/lib/utils";
 import { X } from "lucide-react";
 import { AnimatePresence } from "motion/react";
 import * as motion from "motion/react-client";
-import { startTransition, useEffect, useOptimistic, useRef } from "react";
+import {
+  startTransition,
+  useEffect,
+  useOptimistic,
+  useRef,
+  useState,
+} from "react";
 import { toast } from "sonner";
 import { useEditorContext } from "../_contexts/editor-context";
 import { deleteImage, uploadImage } from "../actions";
@@ -24,6 +37,7 @@ export default function ImageSelectorCard({
   images: { url: string; alt: string }[];
 }) {
   const {
+    editor,
     isImageSelectorOpen,
     setIsImageSelectorOpen,
     imageSelected,
@@ -53,6 +67,7 @@ export default function ImageSelectorCard({
       }
     },
   );
+  const [position, setPosition] = useState<string>("");
 
   useEffect(() => {
     function handleEscape(event: KeyboardEvent) {
@@ -85,20 +100,42 @@ export default function ImageSelectorCard({
   }
 
   async function onDeleteImage() {
-    setImageSelected("");
-    if (imageSelected === "") {
+    setImageSelected({ url: "", alt: "" });
+    if (imageSelected.url === "") {
       toast.error("Please select an image to delete");
       return;
     }
     startTransition(() =>
       setOptimsticImages({
         action: "delete",
-        image: { url: imageSelected, alt: "" },
+        image: { url: imageSelected.url, alt: "" },
       }),
     );
-    const response = await deleteImage(imageSelected);
+    const response = await deleteImage(imageSelected.url);
     if (response?.error) toast.error(response.error);
     else toast.success("Image deleted successfully");
+  }
+
+  async function onSubmit() {
+    if (imageSelected.url === "") {
+      toast.error("Please select an image to insert");
+      return;
+    }
+    if (position === "") {
+      toast.error("Please select a position for the image");
+      return;
+    }
+
+    setIsImageSelectorOpen(false);
+    editor
+      ?.chain()
+      .focus()
+      .setResizableImage({
+        src: imageSelected.url,
+        alt: imageSelected.alt,
+        className: `float-${position}`,
+      })
+      .run();
   }
 
   return (
@@ -111,7 +148,7 @@ export default function ImageSelectorCard({
         {isImageSelectorOpen && (
           <motion.div
             ref={cardRef}
-            className="h-[75vh] w-[90%] lg:w-[50%]"
+            className="h-[75vh] w-[90%] lg:w-[60%]"
             initial={{
               opacity: 0,
             }}
@@ -135,7 +172,7 @@ export default function ImageSelectorCard({
                 <ImageGridView images={optimisticImages} />
               </CardContent>
               <CardFooter className="flex w-full justify-between gap-y-2">
-                <div className="flex w-[50%] flex-col gap-2 sm:flex-row">
+                <div className="flex w-[50%] flex-col gap-2 md:flex-row">
                   <Input ref={altRef} placeholder="Alt Text" />
                   <input
                     className="hidden"
@@ -161,14 +198,26 @@ export default function ImageSelectorCard({
                     </Button>
                   </label>
                 </div>
-                <div className="flex flex-col gap-2 sm:flex-row">
+                <div className="flex flex-col gap-2 md:flex-row">
+                  <Select onValueChange={(value) => setPosition(value)}>
+                    <SelectTrigger className="w-[105px]">
+                      <SelectValue placeholder="Position" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="left">Left</SelectItem>
+                      <SelectItem value="right">Right</SelectItem>
+                    </SelectContent>
+                  </Select>
                   <Button
                     onClick={onDeleteImage}
                     className="cursor-pointer bg-red-700 hover:bg-red-800"
                   >
                     Delete
                   </Button>
-                  <Button className="cursor-pointer bg-green-700 hover:bg-green-800">
+                  <Button
+                    onClick={onSubmit}
+                    className="cursor-pointer bg-green-700 hover:bg-green-800"
+                  >
                     Submit
                   </Button>
                 </div>
