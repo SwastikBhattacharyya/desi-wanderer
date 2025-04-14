@@ -14,10 +14,15 @@ type EditorCardProps = {
 };
 
 export default function EditorCard(props: EditorCardProps) {
-  const { isImageWindowOpen, setIsImageWindowOpen } = useEditorContext();
+  const {
+    editor,
+    isImageSelectorOpen: isImageWindowOpen,
+    setIsImageSelectorOpen: setIsImageWindowOpen,
+  } = useEditorContext();
 
   const editorFormProps = {
     ...props,
+    editor,
     isImageWindowOpen,
     setIsImageWindowOpen,
   };

@@ -1,10 +1,11 @@
 import { db } from "@/db";
 import { post } from "@/db/schema";
-import { eq } from "drizzle-orm";
+import { Loader2 } from "lucide-react";
 import * as motion from "motion/react-client";
-import { notFound } from "next/navigation";
-import EditorCard from "./_components/editor-card";
+import { Suspense } from "react";
+import ImageGrid from "./_components/image-grid";
 import ImageSelector from "./_components/image-selector";
+import RichTextEditor from "./_components/rich-text-editor";
 import { EditorProvider } from "./_contexts/editor-context";
 
 export async function generateStaticParams() {
@@ -21,27 +22,39 @@ export default async function EditorPage({
 }) {
   const { slug } = await params;
 
-  const postData = await db.select().from(post).where(eq(post.slug, slug));
-  if (postData.length === 0) notFound();
-
-  const { title, description, content } = postData[0];
-  const editorData = {
-    slug,
-    title,
-    description,
-    content,
-  };
-
   return (
     <EditorProvider>
+      <div className="absolute h-full w-full">
+        <ImageSelector>
+          <Suspense
+            fallback={
+              <div className="flex h-full w-full flex-col items-center justify-center gap-y-2 text-center text-3xl font-bold">
+                <div>Loading Images</div>
+                <Loader2 className="animate-spin" />
+              </div>
+            }
+          >
+            <ImageGrid />
+          </Suspense>
+        </ImageSelector>
+      </div>
+
       <motion.div
         className="relative flex min-h-screen min-w-screen p-10"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.25 }}
       >
-        <ImageSelector />
-        <EditorCard {...editorData} />
+        <Suspense
+          fallback={
+            <div className="absolute top-0 right-0 flex h-screen w-screen flex-col items-center justify-center gap-y-2 text-center text-3xl font-bold">
+              <div>Loading the Editor, Please Wait...</div>
+              <Loader2 className="animate-spin" />
+            </div>
+          }
+        >
+          <RichTextEditor slug={slug} />
+        </Suspense>
       </motion.div>
     </EditorProvider>
   );

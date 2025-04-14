@@ -13,9 +13,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
-import TextAlign from "@tiptap/extension-text-align";
-import { useEditor } from "@tiptap/react";
-import StarterKit from "@tiptap/starter-kit";
+import { Editor } from "@tiptap/react";
 import { Loader2 } from "lucide-react";
 import * as motion from "motion/react-client";
 import { useRouter } from "next/navigation";
@@ -30,6 +28,7 @@ type EditorFormProps = {
   title: string;
   description: string;
   content: string;
+  editor: Editor | null;
   isImageWindowOpen: boolean;
   setIsImageWindowOpen: (isOpen: boolean) => void;
 };
@@ -43,28 +42,17 @@ export default function EditorForm(props: EditorFormProps) {
     },
   });
 
-  const { isImageWindowOpen, setIsImageWindowOpen } = props;
+  const { editor } = props;
 
-  const editor = useEditor({
-    extensions: [
-      StarterKit,
-      TextAlign.configure({
-        types: ["heading", "paragraph"],
-      }),
-    ],
-    content: props.content,
-    editorProps: {
-      attributes: {
-        class:
-          "p-4 bg-slate-50 rounded-md outline-none border focus:border-black transition-colors duration-300 h-[100%]",
-      },
-    },
-    immediatelyRender: false,
-  });
+  const { isImageWindowOpen, setIsImageWindowOpen } = props;
 
   useEffect(() => {
     editor?.setEditable(!isImageWindowOpen);
   }, [isImageWindowOpen, editor]);
+
+  useEffect(() => {
+    editor?.commands.setContent(props.content);
+  }, [editor, props.content]);
 
   const router = useRouter();
 
@@ -163,8 +151,8 @@ export default function EditorForm(props: EditorFormProps) {
               <div className="flex h-full flex-col">
                 <MenuBar
                   editor={editor}
-                  isImageWindowOpen={isImageWindowOpen}
-                  setIsImageWindowOpen={setIsImageWindowOpen}
+                  isImageSelectorOpen={isImageWindowOpen}
+                  setIsImageSelectorOpen={setIsImageWindowOpen}
                 />
                 <RichTextEditor editor={editor} />
               </div>

@@ -1,26 +1,47 @@
 "use client";
 
+import TextAlign from "@tiptap/extension-text-align";
+import { Editor, useEditor } from "@tiptap/react";
+import StarterKit from "@tiptap/starter-kit";
 import { createContext, useContext, useState } from "react";
 
 type EditorContextType = {
-  isImageWindowOpen: boolean;
+  editor: Editor | null;
+  isImageSelectorOpen: boolean;
   imageSelected: string;
-  setIsImageWindowOpen: (isOpen: boolean) => void;
+  setIsImageSelectorOpen: (isOpen: boolean) => void;
   setImageSelected: (url: string) => void;
 };
 
 const EditorContext = createContext<EditorContextType | null>(null);
 
 export function EditorProvider({ children }: { children: React.ReactNode }) {
-  const [isImageWindowOpen, setIsImageWindowOpen] = useState(false);
+  const [isImageSelectorOpen, setIsImageSelectorOpen] = useState(false);
   const [imageSelected, setImageSelected] = useState("");
+  const editor = useEditor({
+    extensions: [
+      StarterKit,
+      TextAlign.configure({
+        types: ["heading", "paragraph"],
+      }),
+    ],
+    content: "",
+    editorProps: {
+      attributes: {
+        class:
+          "p-4 bg-slate-50 rounded-md outline-none border focus:border-black transition-colors duration-300 h-[100%] selection:bg-orange-500 selection:text-white",
+      },
+    },
+    immediatelyRender: false,
+  });
 
   return (
     <EditorContext.Provider
       value={{
-        isImageWindowOpen,
+        editor,
+        isImageSelectorOpen: isImageSelectorOpen,
         imageSelected,
-        setIsImageWindowOpen,
+        setIsImageSelectorOpen: setIsImageSelectorOpen,
         setImageSelected,
       }}
     >

@@ -17,7 +17,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className="antialiased">
-        <main>{children}</main>
+        <main className="relative">{children}</main>
         <Toaster closeButton expand richColors />
         <CookieToaster />
       </body>

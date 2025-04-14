@@ -19,14 +19,14 @@ import {
 
 type MenuBarProps = {
   editor: Editor | null;
-  isImageWindowOpen: boolean;
-  setIsImageWindowOpen: (isOpen: boolean) => void;
+  isImageSelectorOpen: boolean;
+  setIsImageSelectorOpen: (isOpen: boolean) => void;
 };
 
 export default function MenuBar({
   editor,
-  isImageWindowOpen,
-  setIsImageWindowOpen,
+  isImageSelectorOpen,
+  setIsImageSelectorOpen,
 }: MenuBarProps) {
   if (!editor) {
     return null;
@@ -95,7 +95,7 @@ export default function MenuBar({
     },
     {
       icon: <ImageIcon className="size-4" />,
-      onClick: () => setIsImageWindowOpen(!isImageWindowOpen),
+      onClick: () => setIsImageSelectorOpen(!isImageSelectorOpen),
       pressed: false,
     },
   ];
@@ -104,7 +104,7 @@ export default function MenuBar({
     <div className="mb-1 space-x-2 rounded-md border bg-slate-50 p-1">
       {options.map((option, index) => (
         <Toggle
-          disabled={isImageWindowOpen}
+          disabled={isImageSelectorOpen}
           key={index}
           className={cn(
             "cursor-pointer rounded-md bg-slate-50 p-2 hover:bg-slate-200 focus:bg-slate-200 focus:outline-none",
@@ -113,10 +113,10 @@ export default function MenuBar({
                 option.pressed,
             },
             {
-              "hover:bg-slate-50": isImageWindowOpen && !option.pressed,
+              "hover:bg-slate-50": isImageSelectorOpen && !option.pressed,
             },
           )}
-          onClick={() => !isImageWindowOpen && option.onClick()}
+          onClick={() => !isImageSelectorOpen && option.onClick()}
           pressed={option.pressed}
         >
           {option.icon}
