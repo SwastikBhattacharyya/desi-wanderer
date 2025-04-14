@@ -52,3 +52,31 @@ export const verification = pgTable("verification", {
   createdAt: timestamp("created_at"),
   updatedAt: timestamp("updated_at"),
 });
+
+export const post = pgTable("post", {
+  slug: text("slug").primaryKey(),
+  title: text("title").notNull(),
+  description: text("description").notNull(),
+  content: text("content").notNull().default("<p>Write your content here</p>"),
+  authorId: text("author_id")
+    .notNull()
+    .references(() => user.id, { onDelete: "cascade" }),
+  masterImage: text("master_image").references(() => image.url, {
+    onDelete: "cascade",
+  }),
+  published: boolean("published").notNull().default(false),
+  createdAt: timestamp("created_at").notNull().defaultNow(),
+  updatedAt: timestamp("updated_at")
+    .notNull()
+    .defaultNow()
+    .$onUpdate(() => new Date()),
+});
+
+export const image = pgTable("image", {
+  url: text("url").primaryKey(),
+  ownerId: text("owner_id")
+    .notNull()
+    .references(() => user.id, { onDelete: "cascade" }),
+  alt: text("alt").notNull(),
+  createdAt: timestamp("created_at").notNull().defaultNow(),
+});
