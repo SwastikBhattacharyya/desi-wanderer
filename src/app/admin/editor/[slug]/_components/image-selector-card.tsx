@@ -39,9 +39,12 @@ export default function ImageSelectorCard({
   const {
     editor,
     isImageSelectorOpen,
+    isMasterImageSelectorOpen,
     setIsImageSelectorOpen,
+    setIsMasterImageSelectorOpen,
     imageSelected,
     setImageSelected,
+    setMasterImageUrl,
   } = useEditorContext();
   const altRef = useRef<HTMLInputElement>(null);
   const cardRef = useRef<HTMLDivElement>(null);
@@ -71,14 +74,22 @@ export default function ImageSelectorCard({
 
   useEffect(() => {
     function handleEscape(event: KeyboardEvent) {
-      if (event.key === "Escape") setIsImageSelectorOpen(false);
+      if (event.key === "Escape") {
+        setIsImageSelectorOpen(false);
+        if (isMasterImageSelectorOpen) setIsMasterImageSelectorOpen(false);
+      }
     }
 
     document.addEventListener("keydown", handleEscape);
     return () => {
       document.removeEventListener("keydown", handleEscape);
     };
-  }, [isImageSelectorOpen, setIsImageSelectorOpen]);
+  }, [
+    isImageSelectorOpen,
+    setIsImageSelectorOpen,
+    isMasterImageSelectorOpen,
+    setIsMasterImageSelectorOpen,
+  ]);
 
   async function onUploadImage(event: React.ChangeEvent<HTMLInputElement>) {
     const imageFile = event.target.files?.[0];
@@ -121,12 +132,22 @@ export default function ImageSelectorCard({
       toast.error("Please select an image to insert");
       return;
     }
+
+    if (isMasterImageSelectorOpen) {
+      setMasterImageUrl(imageSelected.url);
+      setIsImageSelectorOpen(false);
+      setIsMasterImageSelectorOpen(false);
+      setImageSelected({ url: "", alt: "" });
+      return;
+    }
+
     if (position === "") {
       toast.error("Please select a position for the image");
       return;
     }
 
     setIsImageSelectorOpen(false);
+    setImageSelected({ url: "", alt: "" });
     editor
       ?.chain()
       .focus()
@@ -164,7 +185,11 @@ export default function ImageSelectorCard({
                 <div>
                   <X
                     className="cursor-pointer"
-                    onClick={() => setIsImageSelectorOpen(false)}
+                    onClick={() => {
+                      setIsImageSelectorOpen(false);
+                      if (isMasterImageSelectorOpen)
+                        setIsMasterImageSelectorOpen(false);
+                    }}
                   />
                 </div>
               </CardHeader>

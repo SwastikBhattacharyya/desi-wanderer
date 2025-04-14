@@ -16,6 +16,7 @@ type EditorCardProps = {
   title: string;
   description: string;
   content: string;
+  masterImage: string;
 };
 
 export default function EditorCard(props: EditorCardProps) {
@@ -37,7 +38,7 @@ export default function EditorCard(props: EditorCardProps) {
     editorProps: {
       attributes: {
         class:
-          "p-4 bg-slate-50 rounded-md outline-none border focus:border-black transition-colors duration-300 h-[100%] selection:bg-orange-500 selection:text-white",
+          "p-4 bg-slate-50 rounded-md outline-none border focus:border-black transition-colors duration-300 h-full selection:bg-orange-500 selection:text-white overflow-y-scroll",
       },
     },
     immediatelyRender: false,

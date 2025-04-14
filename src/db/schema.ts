@@ -61,6 +61,9 @@ export const post = pgTable("post", {
   authorId: text("author_id")
     .notNull()
     .references(() => user.id, { onDelete: "cascade" }),
+  masterImage: text("master_image").references(() => image.url, {
+    onDelete: "cascade",
+  }),
   published: boolean("published").notNull().default(false),
   createdAt: timestamp("created_at").notNull().defaultNow(),
   updatedAt: timestamp("updated_at")
@@ -70,7 +73,7 @@ export const post = pgTable("post", {
 });
 
 export const image = pgTable("image", {
-  url: text("url").notNull(),
+  url: text("url").primaryKey(),
   ownerId: text("owner_id")
     .notNull()
     .references(() => user.id, { onDelete: "cascade" }),

@@ -8,9 +8,13 @@ type EditorContextType = {
   editor: Editor | null;
   isImageSelectorOpen: boolean;
   imageSelected: { url: string; alt: string };
+  isMasterImageSelectorOpen: boolean;
+  masterImageUrl: string;
   setEditor: (editor: Editor | null) => void;
   setIsImageSelectorOpen: (isOpen: boolean) => void;
   setImageSelected: (image: { url: string; alt: string }) => void;
+  setIsMasterImageSelectorOpen: (isOpen: boolean) => void;
+  setMasterImageUrl: (url: string) => void;
 };
 
 export type ImageAttributes = {
@@ -25,6 +29,9 @@ export function EditorProvider({ children }: { children: React.ReactNode }) {
   const [editor, setEditor] = useState<Editor | null>(null);
   const [isImageSelectorOpen, setIsImageSelectorOpen] = useState(false);
   const [imageSelected, setImageSelected] = useState({ url: "", alt: "" });
+  const [isMasterImageSelectorOpen, setIsMasterImageSelectorOpen] =
+    useState(false);
+  const [masterImageUrl, setMasterImageUrl] = useState("");
 
   return (
     <EditorContext.Provider
@@ -32,9 +39,13 @@ export function EditorProvider({ children }: { children: React.ReactNode }) {
         editor,
         isImageSelectorOpen: isImageSelectorOpen,
         imageSelected,
+        isMasterImageSelectorOpen,
+        masterImageUrl,
         setEditor,
         setIsImageSelectorOpen: setIsImageSelectorOpen,
         setImageSelected,
+        setIsMasterImageSelectorOpen,
+        setMasterImageUrl,
       }}
     >
       {children}

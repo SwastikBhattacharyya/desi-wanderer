@@ -10,8 +10,12 @@ import { headers } from "next/headers";
 import { Post } from "./types";
 
 type PostData = Post & {
+  title: string;
+  description: string;
   slug: string;
   content: string;
+  published: boolean;
+  masterImage: string | null;
 };
 
 export async function updatePost(postData: PostData) {
