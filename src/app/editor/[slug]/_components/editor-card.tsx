@@ -12,6 +12,7 @@ import { useEditorContext } from "../_contexts/editor-context";
 import EditorForm from "./editor-form";
 
 type EditorCardProps = {
+  id: string;
   slug: string;
   title: string;
   description: string;

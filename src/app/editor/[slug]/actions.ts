@@ -10,9 +10,11 @@ import { headers } from "next/headers";
 import { Post } from "./types";
 
 type PostData = Post & {
+  id: string;
   title: string;
   description: string;
-  slug: string;
+  oldSlug: string;
+  newSlug: string;
   content: string;
   published: boolean;
   masterImage: string | null;
@@ -20,12 +22,24 @@ type PostData = Post & {
 
 export async function updatePost(postData: PostData) {
   try {
-    await db.update(post).set(postData).where(eq(post.slug, postData.slug));
+    await db
+      .update(post)
+      .set({
+        title: postData.title,
+        description: postData.description,
+        slug: postData.newSlug,
+        content: postData.content,
+        published: postData.published,
+        masterImage: postData.masterImage,
+      })
+      .where(eq(post.id, postData.id));
   } catch {
     return { error: "Unexpected error occured while updating post" };
   }
 
-  revalidatePath(`/admin/editor/${postData.slug}`);
+  if (postData.oldSlug !== postData.newSlug)
+    revalidatePath(`/editor/${postData.oldSlug}`);
+  revalidatePath(`/editor/${postData.newSlug}`);
 }
 
 export async function deletePost(slug: string) {
@@ -35,7 +49,7 @@ export async function deletePost(slug: string) {
     return { error: "Unexpected error occured while deleting post" };
   }
 
-  revalidatePath(`/admin/editor/${slug}`);
+  revalidatePath(`/editor/${slug}`);
 }
 
 export async function uploadImage(
@@ -67,7 +81,7 @@ export async function uploadImage(
     alt: altText,
   });
 
-  revalidatePath("/admin/editor/[slug]", "page");
+  revalidatePath("/editor/[slug]", "page");
 }
 
 export async function deleteImage(url: string) {
@@ -84,5 +98,5 @@ export async function deleteImage(url: string) {
     return { error: "Unexpected error occured while deleting image" };
   }
 
-  revalidatePath("/admin/editor/[slug]", "page");
+  revalidatePath("/editor/[slug]", "page");
 }

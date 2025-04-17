@@ -10,7 +10,7 @@ import { MiddlewareFactory } from ".";
 export const withRole: MiddlewareFactory = (next) => {
   return async (request: NextRequest, _next: NextFetchEvent) => {
     const pathname = request.nextUrl.pathname;
-    if (pathname.split("/")[1] != "admin") return next(request, _next);
+    if (pathname.split("/")[1] != "editor") return next(request, _next);
 
     const authResponse = await auth.api.getSession({
       headers: await headers(),
