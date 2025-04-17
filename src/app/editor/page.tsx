@@ -2,6 +2,7 @@ import { db } from "@/db";
 import { post, user } from "@/db/schema";
 import { auth } from "@/lib/auth";
 import { eq } from "drizzle-orm";
+import * as motion from "motion/react-client";
 import { headers } from "next/headers";
 import { PostTable } from "./_components/post-table";
 import { columns } from "./columns";
@@ -52,9 +53,14 @@ export default async function EditorList() {
   }));
 
   return (
-    <div className="flex min-h-screen min-w-screen flex-col items-center justify-center px-4">
-      <h1 className="text-2xl font-bold md:text-4xl">Posts</h1>
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.5 }}
+      className="flex min-h-screen min-w-screen flex-col items-center justify-center px-4"
+    >
+      <h1 className="text-2xl font-bold md:text-4xl">Editor</h1>
       <PostTable columns={columns} data={tableData} />
-    </div>
+    </motion.div>
   );
 }

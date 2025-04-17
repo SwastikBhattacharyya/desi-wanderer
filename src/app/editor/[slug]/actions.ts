@@ -38,8 +38,8 @@ export async function updatePost(postData: PostData) {
   }
 
   if (postData.oldSlug !== postData.newSlug)
-    revalidatePath(`/admin/editor/${postData.oldSlug}`);
-  revalidatePath(`/admin/editor/${postData.newSlug}`);
+    revalidatePath(`/editor/${postData.oldSlug}`);
+  revalidatePath(`/editor/${postData.newSlug}`);
 }
 
 export async function deletePost(slug: string) {
@@ -49,7 +49,7 @@ export async function deletePost(slug: string) {
     return { error: "Unexpected error occured while deleting post" };
   }
 
-  revalidatePath(`/admin/editor/${slug}`);
+  revalidatePath(`/editor/${slug}`);
 }
 
 export async function uploadImage(
@@ -81,7 +81,7 @@ export async function uploadImage(
     alt: altText,
   });
 
-  revalidatePath("/admin/editor/[slug]", "page");
+  revalidatePath("/editor/[slug]", "page");
 }
 
 export async function deleteImage(url: string) {
@@ -98,5 +98,5 @@ export async function deleteImage(url: string) {
     return { error: "Unexpected error occured while deleting image" };
   }
 
-  revalidatePath("/admin/editor/[slug]", "page");
+  revalidatePath("/editor/[slug]", "page");
 }

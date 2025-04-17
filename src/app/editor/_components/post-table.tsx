@@ -78,7 +78,7 @@ export function PostTable<TData, TValue>({
             if (response.error) toast.error(response.error);
             else {
               toast.success("Post created");
-              router.push(`/admin/editor/${response.slug}`);
+              router.push(`/editor/${response.slug}`);
             }
           }}
           className="cursor-pointer"

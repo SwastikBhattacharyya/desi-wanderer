@@ -88,8 +88,7 @@ export default function EditorForm(props: EditorFormProps) {
     if (response?.error) toast.error(response.error);
     else toast.success("Post updated successfully");
 
-    if (data.oldSlug !== data.newSlug)
-      router.push(`/admin/editor/${data.newSlug}`);
+    if (data.oldSlug !== data.newSlug) router.push(`/editor/${data.newSlug}`);
   }
 
   async function onSubmit(formData: Post) {
@@ -114,8 +113,7 @@ export default function EditorForm(props: EditorFormProps) {
     if (response?.error) toast.error(response.error);
     else toast.success("Post updated successfully");
 
-    if (data.oldSlug !== data.newSlug)
-      router.push(`/admin/editor/${data.newSlug}`);
+    if (data.oldSlug !== data.newSlug) router.push(`/editor/${data.newSlug}`);
   }
 
   async function onDelete() {
@@ -123,7 +121,7 @@ export default function EditorForm(props: EditorFormProps) {
     if (response?.error) toast.error(response.error);
     else {
       toast.success("Post deleted successfully");
-      router.push("/admin");
+      router.push("/editor");
     }
   }
 
@@ -312,7 +310,7 @@ export default function EditorForm(props: EditorFormProps) {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.25, delay: 0.7 }}
           >
-            <Link href="/admin/editor">
+            <Link href="/editor">
               <Button className="cursor-pointer">All Posts</Button>
             </Link>
           </motion.div>

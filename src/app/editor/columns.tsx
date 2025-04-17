@@ -96,9 +96,7 @@ export const columns: ColumnDef<Post>[] = [
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <DropdownMenuItem
-              onClick={async () => redirect("/admin/editor/" + slug)}
-            >
+            <DropdownMenuItem onClick={async () => redirect("/editor/" + slug)}>
               Edit Post
             </DropdownMenuItem>
             <DropdownMenuItem
@@ -107,7 +105,7 @@ export const columns: ColumnDef<Post>[] = [
                 if (response?.error) toast.error(response.error);
                 else {
                   toast.success("Post deleted successfully");
-                  redirect("/admin/editor");
+                  redirect("/editor");
                 }
               }}
             >
