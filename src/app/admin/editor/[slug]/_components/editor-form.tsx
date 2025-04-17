@@ -19,6 +19,7 @@ import { Editor } from "@tiptap/react";
 import { Loader2 } from "lucide-react";
 import * as motion from "motion/react-client";
 import Image from "next/image";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
@@ -304,6 +305,16 @@ export default function EditorForm(props: EditorFormProps) {
                 Please wait...
               </Button>
             )}
+          </motion.div>
+          <motion.div
+            className="self-center"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.25, delay: 0.7 }}
+          >
+            <Link href="/admin/editor">
+              <Button className="cursor-pointer">All Posts</Button>
+            </Link>
           </motion.div>
           <div className="flex flex-col gap-2 md:flex-row">
             <motion.div
