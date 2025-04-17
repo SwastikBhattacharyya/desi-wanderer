@@ -28,6 +28,7 @@ import { deletePost, updatePost } from "../actions";
 import { Post, postSchema } from "../types";
 
 type EditorFormProps = {
+  id: string;
   slug: string;
   title: string;
   description: string;
@@ -42,6 +43,7 @@ export default function EditorForm(props: EditorFormProps) {
   const form = useForm<Post>({
     resolver: zodResolver(postSchema),
     defaultValues: {
+      slug: props.slug,
       title: props.title,
       description: props.description,
       published: false,
@@ -73,7 +75,9 @@ export default function EditorForm(props: EditorFormProps) {
 
     const data = {
       ...formData,
-      slug: props.slug,
+      id: props.id,
+      oldSlug: props.slug,
+      newSlug: formData.slug,
       content,
       published: false,
       masterImage: masterImageUrl === "" ? null : masterImageUrl,
@@ -82,6 +86,9 @@ export default function EditorForm(props: EditorFormProps) {
     const response = await updatePost(data);
     if (response?.error) toast.error(response.error);
     else toast.success("Post updated successfully");
+
+    if (data.oldSlug !== data.newSlug)
+      router.push(`/admin/editor/${data.newSlug}`);
   }
 
   async function onSubmit(formData: Post) {
@@ -94,7 +101,9 @@ export default function EditorForm(props: EditorFormProps) {
 
     const data = {
       ...formData,
-      slug: props.slug,
+      id: props.id,
+      oldSlug: props.slug,
+      newSlug: formData.slug,
       content,
       published: true,
       masterImage: masterImageUrl === "" ? null : masterImageUrl,
@@ -103,6 +112,9 @@ export default function EditorForm(props: EditorFormProps) {
     const response = await updatePost(data);
     if (response?.error) toast.error(response.error);
     else toast.success("Post updated successfully");
+
+    if (data.oldSlug !== data.newSlug)
+      router.push(`/admin/editor/${data.newSlug}`);
   }
 
   async function onDelete() {
@@ -159,8 +171,9 @@ export default function EditorForm(props: EditorFormProps) {
                     </FormLabel>
                     <FormControl>
                       <Textarea
+                        rows={3}
                         disabled={isImageWindowOpen}
-                        className="h-full resize-none bg-slate-50 selection:bg-orange-500 placeholder:text-gray-400"
+                        className="resize-none bg-slate-50 selection:bg-orange-500 placeholder:text-gray-400"
                         placeholder="Post Description"
                         {...field}
                       />
@@ -172,6 +185,31 @@ export default function EditorForm(props: EditorFormProps) {
             />
           </div>
           <div className="flex w-full flex-col gap-y-3">
+            <FormField
+              control={form.control}
+              name="slug"
+              render={({ field }) => (
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.25, delay: 0.4 }}
+                >
+                  <FormItem className="flex flex-col gap-y-0.5">
+                    <FormLabel className="text-md font-bold">Slug</FormLabel>
+                    <FormControl>
+                      <Input
+                        disabled={isImageWindowOpen}
+                        className="bg-slate-50 selection:bg-orange-500 placeholder:text-gray-400"
+                        type="slug"
+                        placeholder="Post Slug"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                </motion.div>
+              )}
+            />
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}

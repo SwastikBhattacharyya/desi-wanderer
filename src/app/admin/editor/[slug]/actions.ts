@@ -10,9 +10,11 @@ import { headers } from "next/headers";
 import { Post } from "./types";
 
 type PostData = Post & {
+  id: string;
   title: string;
   description: string;
-  slug: string;
+  oldSlug: string;
+  newSlug: string;
   content: string;
   published: boolean;
   masterImage: string | null;
@@ -20,12 +22,24 @@ type PostData = Post & {
 
 export async function updatePost(postData: PostData) {
   try {
-    await db.update(post).set(postData).where(eq(post.slug, postData.slug));
+    await db
+      .update(post)
+      .set({
+        title: postData.title,
+        description: postData.description,
+        slug: postData.newSlug,
+        content: postData.content,
+        published: postData.published,
+        masterImage: postData.masterImage,
+      })
+      .where(eq(post.id, postData.id));
   } catch {
     return { error: "Unexpected error occured while updating post" };
   }
 
-  revalidatePath(`/admin/editor/${postData.slug}`);
+  if (postData.oldSlug !== postData.newSlug)
+    revalidatePath(`/admin/editor/${postData.oldSlug}`);
+  revalidatePath(`/admin/editor/${postData.newSlug}`);
 }
 
 export async function deletePost(slug: string) {

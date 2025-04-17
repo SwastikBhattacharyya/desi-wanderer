@@ -1,4 +1,11 @@
-import { boolean, pgEnum, pgTable, text, timestamp } from "drizzle-orm/pg-core";
+import {
+  boolean,
+  pgEnum,
+  pgTable,
+  text,
+  timestamp,
+  uuid,
+} from "drizzle-orm/pg-core";
 
 export const userRoleEnum = pgEnum("user-role", ["admin", "author", "user"]);
 
@@ -54,16 +61,15 @@ export const verification = pgTable("verification", {
 });
 
 export const post = pgTable("post", {
-  slug: text("slug").primaryKey(),
+  id: uuid("id").primaryKey().defaultRandom(),
+  slug: text("slug").notNull().unique(),
   title: text("title").notNull(),
   description: text("description").notNull(),
   content: text("content").notNull().default("<p>Write your content here</p>"),
   authorId: text("author_id")
     .notNull()
     .references(() => user.id, { onDelete: "cascade" }),
-  masterImage: text("master_image").references(() => image.url, {
-    onDelete: "cascade",
-  }),
+  masterImage: text("master_image").references(() => image.url),
   published: boolean("published").notNull().default(false),
   createdAt: timestamp("created_at").notNull().defaultNow(),
   updatedAt: timestamp("updated_at")

@@ -8,8 +8,9 @@ export default async function RichTextEditor({ slug }: { slug: string }) {
   const postData = await db.select().from(post).where(eq(post.slug, slug));
   if (postData.length === 0) notFound();
 
-  const { title, description, content, masterImage } = postData[0];
+  const { id, title, description, content, masterImage } = postData[0];
   const editorData = {
+    id,
     slug,
     title,
     description,
