@@ -18,6 +18,7 @@ import { deletePost } from "./actions";
 export type Post = {
   slug: string;
   title: string;
+  published: string;
   dateCreated: string;
   dateUpdated: string;
 };
@@ -46,6 +47,20 @@ export const columns: ColumnDef<Post>[] = [
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
           Title
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
+  },
+  {
+    accessorKey: "published",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Published
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       );

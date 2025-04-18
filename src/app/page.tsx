@@ -3,22 +3,37 @@ import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { db } from "@/db";
 import { post } from "@/db/schema";
 import { auth } from "@/lib/auth";
-import { desc } from "drizzle-orm";
+import { desc, eq } from "drizzle-orm";
 import * as motion from "motion/react-client";
+import { unstable_cache } from "next/cache";
 import { headers } from "next/headers";
 import Image from "next/image";
 import Link from "next/link";
 import { signOut } from "./actions";
 
 export default async function Home() {
-  const posts = await db.select().from(post).orderBy(desc(post.createdAt));
+  const getCachedPosts = unstable_cache(
+    async () => {
+      return await db
+        .select()
+        .from(post)
+        .where(eq(post.published, true))
+        .orderBy(desc(post.createdAt));
+    },
+    ["home-posts"],
+    {
+      tags: ["posts"],
+    },
+  );
+
   const session = await auth.api.getSession({
     headers: await headers(),
   });
   const user = session?.user.name;
+  const posts = await getCachedPosts();
 
   return (
-    <div className="flex flex-col bg-linear-to-br from-slate-700 to-slate-400 text-white">
+    <div className="flex min-h-screen flex-col bg-linear-to-br from-slate-700 to-slate-400 text-white">
       <section className="relative flex h-[75vh] w-full items-center justify-center border border-black">
         <div className="absolute z-10 h-full w-full bg-black opacity-65" />
         <motion.div
@@ -92,7 +107,7 @@ export default async function Home() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
         >
-          <h1 className="justify-self-center text-center text-3xl font-bold">
+          <h1 className="h-full justify-self-center text-center text-3xl font-bold">
             Latest Posts
           </h1>
         </motion.div>
@@ -124,7 +139,9 @@ export default async function Home() {
                   </div>
                 </CardContent>
                 <CardFooter className="flex justify-center">
-                  <Button className="cursor-pointer">Read More</Button>
+                  <Link href={`/blog/${post.slug}`}>
+                    <Button className="cursor-pointer">Read More</Button>
+                  </Link>
                 </CardFooter>
               </Card>
             </motion.div>
