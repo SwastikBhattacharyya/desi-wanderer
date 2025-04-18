@@ -4,6 +4,7 @@ import { db } from "@/db";
 import { post } from "@/db/schema";
 import { auth } from "@/lib/auth";
 import { eq } from "drizzle-orm";
+import { revalidatePath, revalidateTag } from "next/cache";
 import { headers } from "next/headers";
 
 export async function createPost() {
@@ -26,6 +27,10 @@ export async function createPost() {
     return { error: "Failed to create post" };
   }
 
+  revalidatePath("/blog/" + slug);
+  revalidatePath("/editor/" + slug);
+  revalidateTag("posts");
+
   return { slug };
 }
 
@@ -35,4 +40,8 @@ export async function deletePost(slug: string) {
   } catch {
     return { error: "Failed to delete post" };
   }
+
+  revalidatePath("/blog/" + slug);
+  revalidatePath("/editor/" + slug);
+  revalidateTag("posts");
 }

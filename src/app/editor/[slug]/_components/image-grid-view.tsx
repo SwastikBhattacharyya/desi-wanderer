@@ -20,12 +20,12 @@ export default function ImageGridView({
     );
 
   return (
-    <div className="grid grid-cols-2 gap-4 overflow-y-scroll sm:grid-cols-3">
+    <div className="grid grid-cols-2 items-stretch gap-4 overflow-y-scroll sm:grid-cols-3">
       {images.map((image, index) => (
         <div className="relative" key={index}>
           <Image
             className={cn(
-              "during-200 relative w-full rounded-xl transition-all",
+              "during-200 relative h-full w-full rounded-xl object-cover transition-all",
               {
                 "animate-pulse duration-1000": image.url === "uploading",
               },

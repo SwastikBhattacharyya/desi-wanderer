@@ -9,6 +9,7 @@ import {
 import * as motion from "motion/react-client";
 import Image from "next/image";
 import Link from "next/link";
+import Social from "../_components/social";
 import SignUpForm from "./_components/sign-up-form";
 
 export default function SignUpPage() {
@@ -61,11 +62,16 @@ export default function SignUpPage() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.25, delay: 1.1 }}
           >
-            <CardFooter className="flex justify-start gap-2 text-center">
-              <div>Already have an account?</div>
-              <Link className="text-orange-400" href="/auth/sign-in">
-                Sign In
-              </Link>
+            <CardFooter className="flex flex-col items-start gap-y-2">
+              <div className="flex gap-2">
+                <div>Already have an account?</div>
+                <Link className="text-orange-400" href="/auth/sign-in">
+                  Sign In
+                </Link>
+              </div>
+              <div className="self-center">
+                <Social />
+              </div>
             </CardFooter>
           </motion.div>
         </Card>

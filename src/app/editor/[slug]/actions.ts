@@ -5,7 +5,7 @@ import { image, post } from "@/db/schema";
 import { auth } from "@/lib/auth";
 import { BlobAccessError, del, put } from "@vercel/blob";
 import { eq } from "drizzle-orm";
-import { revalidatePath } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
 import { headers } from "next/headers";
 import { Post } from "./types";
 
@@ -37,9 +37,14 @@ export async function updatePost(postData: PostData) {
     return { error: "Unexpected error occured while updating post" };
   }
 
-  if (postData.oldSlug !== postData.newSlug)
+  if (postData.oldSlug !== postData.newSlug) {
     revalidatePath(`/editor/${postData.oldSlug}`);
+    revalidatePath(`/blog/${postData.oldSlug}`);
+  }
+
   revalidatePath(`/editor/${postData.newSlug}`);
+  revalidatePath(`/blog/${postData.newSlug}`);
+  revalidateTag("posts");
 }
 
 export async function deletePost(slug: string) {
@@ -50,6 +55,8 @@ export async function deletePost(slug: string) {
   }
 
   revalidatePath(`/editor/${slug}`);
+  revalidatePath(`/blog/${slug}`);
+  revalidateTag("posts");
 }
 
 export async function uploadImage(
