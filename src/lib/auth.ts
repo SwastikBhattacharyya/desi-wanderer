@@ -3,24 +3,10 @@ import { account, session, user, verification } from "@/db/schema";
 import { betterAuth } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
 import { nextCookies } from "better-auth/next-js";
-import { resend } from "./resend";
 
 export const auth = betterAuth({
   emailAndPassword: {
     enabled: true,
-    requireEmailVerification: true,
-  },
-  emailVerification: {
-    sendOnSignUp: true,
-    autoSignInAfterVerification: true,
-    sendVerificationEmail: async ({ user, url }) => {
-      await resend.emails.send({
-        from: "Desi Wanderer <onboarding@resend.dev>",
-        to: user.email,
-        subject: "Verify your email",
-        html: `Click the link to verify your email: ${url}`,
-      });
-    },
   },
   database: drizzleAdapter(db, {
     provider: "pg",
@@ -31,5 +17,11 @@ export const auth = betterAuth({
       verification: verification,
     },
   }),
+  socialProviders: {
+    google: {
+      clientId: process.env.GOOGLE_CLIENT_ID as string,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
+    },
+  },
   plugins: [nextCookies()],
 });
