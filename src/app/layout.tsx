@@ -2,6 +2,7 @@ import { cn } from "@/lib/cn";
 import type { Metadata } from "next";
 import { Archivo, Montserrat } from "next/font/google";
 import { ReactNode } from "react";
+import { Toaster } from "react-hot-toast";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -30,6 +31,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={cn(archivo.variable, montserrat.variable)}>
+        <aside>
+          <Toaster position="bottom-right" />
+        </aside>
         {children}
       </body>
     </html>
