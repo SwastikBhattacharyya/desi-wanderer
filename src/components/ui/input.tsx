@@ -38,7 +38,7 @@ export function InputPlaceholder({
   return (
     <div
       className={cn(
-        "pointer-events-none absolute top-1/2 left-2 origin-left -translate-y-1/2 rounded-md text-on-background/70 lowercase transition-[background_transform] duration-200 ease-in-out select-none not-peer-placeholder-shown:-top-[1px] not-peer-placeholder-shown:scale-80 not-peer-placeholder-shown:bg-success not-peer-placeholder-shown:px-4 not-peer-placeholder-shown:text-on-background peer-focus:-top-[1px] peer-focus:scale-80 peer-focus:bg-success peer-focus:px-4 peer-focus:text-on-background not-peer-placeholder-shown:peer-data-[valid=false]:bg-error peer-placeholder-shown:peer-data-[valid=false]:text-error peer-placeholder-shown:peer-focus:peer-data-[valid=false]:bg-error peer-placeholder-shown:peer-focus:peer-data-[valid=false]:text-on-background",
+        "pointer-events-none absolute top-1/2 left-2 origin-left -translate-y-1/2 rounded-md text-on-background/70 lowercase transition-[background_transform] duration-200 ease-in-out select-none not-peer-placeholder-shown:-top-[1px] not-peer-placeholder-shown:scale-80 not-peer-placeholder-shown:bg-success not-peer-placeholder-shown:px-4 not-peer-placeholder-shown:text-on-success peer-focus:-top-[1px] peer-focus:scale-80 peer-focus:bg-success peer-focus:px-4 peer-focus:text-on-success not-peer-placeholder-shown:peer-data-[valid=false]:bg-error not-peer-placeholder-shown:peer-data-[valid=false]:text-on-error peer-placeholder-shown:peer-data-[valid=false]:text-error peer-placeholder-shown:peer-focus:peer-data-[valid=false]:bg-error peer-placeholder-shown:peer-focus:peer-data-[valid=false]:text-on-error",
         className,
       )}
       data-slot="placeholder"

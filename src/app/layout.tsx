@@ -32,7 +32,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={cn(archivo.variable, montserrat.variable)}>
         <aside>
-          <Toaster position="bottom-right" />
+          <Toaster containerClassName="select-none" position="bottom-right" />
         </aside>
         {children}
       </body>

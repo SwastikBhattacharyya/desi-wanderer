@@ -14,8 +14,8 @@
   --color-on-secondary: oklch(0.8843 0.0321 4.76);
   --color-on-background: var(--color-on-secondary);
   --color-on-surface: var(--color-on-secondary);
-  --color-on-error: var(--color-on-secondary);
-  --color-on-success: var(--color-background);
+  --color-on-error: var(--color-on-primary);
+  --color-on-success: var(--color-on-primary);
 }
 
 @theme inline {

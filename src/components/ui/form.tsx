@@ -5,13 +5,13 @@ import { ComponentProps } from "react";
 import {
   Control,
   Path,
-  Form as RFHForm,
+  Form as RHFForm,
   UseFormResetField,
 } from "react-hook-form";
 import z from "zod";
 
 type FormProps<T extends z.ZodTypeAny> = Omit<
-  ComponentProps<typeof RFHForm>,
+  ComponentProps<typeof RHFForm>,
   "control"
 > & {
   control: Control<z.infer<T>>;
@@ -29,7 +29,7 @@ export function Form<T extends z.ZodTypeAny>({
   ...props
 }: FormProps<T>) {
   return (
-    <RFHForm
+    <RHFForm
       onSubmit={async (form) => {
         const action = validatedAction(form.data);
         if (displayToast) withToast(action);
@@ -46,6 +46,6 @@ export function Form<T extends z.ZodTypeAny>({
       {...props}
     >
       {children}
-    </RFHForm>
+    </RHFForm>
   );
 }
