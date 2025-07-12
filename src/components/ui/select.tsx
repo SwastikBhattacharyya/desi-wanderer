@@ -18,26 +18,13 @@ import {
   IconArrowUp,
   IconChevronDown,
 } from "@tabler/icons-react";
-import { ComponentProps, ReactNode } from "react";
-import {
-  Control,
-  Controller,
-  FieldValues,
-  Path,
-  RefCallBack,
-} from "react-hook-form";
+import { ComponentProps } from "react";
+import { RefCallBack } from "react-hook-form";
 
 type SelectProps = ComponentProps<typeof Root> & {
   ref?: RefCallBack;
   className?: string;
   placeholder: string;
-  "data-valid"?: boolean;
-};
-
-type SelectInputType<T extends FieldValues> = ComponentProps<typeof Root> & {
-  name: Path<T>;
-  control: Control<T>;
-  children: ReactNode;
   "data-valid"?: boolean;
 };
 
@@ -176,33 +163,5 @@ export function SelectOption({
     >
       <ItemText>{children}</ItemText>
     </Item>
-  );
-}
-
-export function SelectInput<T extends FieldValues>({
-  name,
-  control,
-  children,
-  ...props
-}: SelectInputType<T>) {
-  return (
-    <Controller
-      control={control}
-      name={name}
-      render={({ field }) => (
-        <Select
-          placeholder="Country"
-          onValueChange={field.onChange}
-          name={field.name}
-          value={field.value ?? ""}
-          ref={field.ref}
-          disabled={field.disabled}
-          data-valid={props["data-valid"]}
-          {...props}
-        >
-          {children}
-        </Select>
-      )}
-    />
   );
 }

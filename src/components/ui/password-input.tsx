@@ -37,10 +37,7 @@ export function PasswordInput({ className, ...props }: PasswordInputProps) {
 
   return (
     <Input
-      className={cn(
-        "focus-within:[&_[data-slot=placeholder]]:-top-[-1px] focus-within:[&_[data-slot=placeholder]]:scale-80 focus-within:[&_[data-slot=placeholder]]:bg-success focus-within:[&_[data-slot=placeholder]]:px-4 focus-within:[&_[data-slot=placeholder]]:not-peer-placeholder-shown:peer-data-[valid=false]:bg-error",
-        className,
-      )}
+      className={className}
       right-slot={RightSlot()}
       role="textbox"
       type={isPasswordVisible ? "text" : "password"}
