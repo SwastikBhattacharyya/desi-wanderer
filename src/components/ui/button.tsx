@@ -35,7 +35,7 @@ export function Button({
             variant === "error",
           "text-on-background hover:text-on-primary focus-visible:text-on-primary":
             outline === true && variant === "primary",
-          "border-2 bg-transparent hover:border-transparent focus-visible:border-transparent focus-visible:ring-transparent":
+          "border-2 bg-transparent hover:border-transparent focus-visible:border-transparent focus-visible:ring-transparent focus-visible:ring-offset-transparent":
             outline === true,
           "size-8": icon,
           "px-2 py-2": !icon,

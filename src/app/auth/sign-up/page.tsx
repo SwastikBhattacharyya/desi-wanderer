@@ -10,10 +10,12 @@ export default function SignUp() {
           Create an account to get started
         </p>
       </div>
-      <SignUpForm />
-      <div className="flex gap-x-1 lowercase">
-        <p>Already have an account?</p>
-        <Link href="/auth/sign-in">Sign In</Link>
+      <div className="flex flex-col gap-y-2">
+        <SignUpForm />
+        <div className="flex gap-x-1 lowercase">
+          <p>Already have an account?</p>
+          <Link href="/auth/sign-in">Sign In</Link>
+        </div>
       </div>
     </>
   );

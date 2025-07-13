@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { ReactNode } from "react";
+import { AuthFooter } from "./_components/auth-footer";
 
 export default function AuthLayout({
   children,
@@ -15,6 +16,7 @@ export default function AuthLayout({
       <main className="flex h-full items-center-safe justify-center-safe">
         <div className="flex w-full max-w-[500px] flex-col gap-y-4 rounded-md p-8 sm:w-[50dvw]">
           {children}
+          <AuthFooter />
         </div>
       </main>
     </div>
