@@ -1,6 +1,6 @@
 {
   "name": "desi-wanderer",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack",
@@ -10,18 +10,23 @@
   },
   "dependencies": {
     "@hookform/resolvers": "^5.1.1",
+    "@neondatabase/serverless": "^1.0.1",
     "@radix-ui/react-dropdown-menu": "^2.1.15",
     "@radix-ui/react-select": "^2.2.5",
     "@radix-ui/react-slot": "^1.2.3",
     "@tabler/icons-react": "^3.34.0",
     "babel-plugin-react-compiler": "19.1.0-rc.2",
+    "better-auth": "^1.2.12",
     "clsx": "^2.1.1",
+    "dotenv": "^17.2.0",
+    "drizzle-orm": "^0.44.2",
     "motion": "^12.23.0",
     "next": "15.4.0-canary.96",
     "react": "19.1.0",
     "react-dom": "19.1.0",
     "react-hook-form": "^7.60.0",
     "react-hot-toast": "^2.5.2",
+    "resend": "^4.6.0",
     "tailwind-merge": "^3.3.1",
     "zod": "^3.25.74"
   },
@@ -32,6 +37,7 @@
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "drizzle-kit": "^0.31.4",
     "eslint": "^9",
     "eslint-config-next": "15.4.0-canary.96",
     "eslint-plugin-react": "^7.37.5",
@@ -40,6 +46,7 @@
     "prettier-plugin-organize-imports": "^4.1.0",
     "prettier-plugin-tailwindcss": "^0.6.13",
     "tailwindcss": "^4",
+    "tsx": "^4.20.3",
     "typescript": "^5"
   }
 }

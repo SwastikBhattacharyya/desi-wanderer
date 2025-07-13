@@ -18,12 +18,14 @@ type FormProps<T extends z.ZodTypeAny> = Omit<
   validatedAction: (data: z.infer<T>) => Promise<ValidatedActionResult>;
   resetField: UseFormResetField<z.infer<T>>;
   displayToast?: boolean;
+  toastLoadingMessage?: string;
 };
 
 export function Form<T extends z.ZodTypeAny>({
   validatedAction,
   resetField,
   displayToast = true,
+  toastLoadingMessage,
   children,
   onSubmit,
   ...props
@@ -32,7 +34,7 @@ export function Form<T extends z.ZodTypeAny>({
     <RHFForm
       onSubmit={async (form) => {
         const action = validatedAction(form.data);
-        if (displayToast) withToast(action);
+        if (displayToast) withToast(action, toastLoadingMessage);
         action.then((result) => {
           if (result.success) {
             (Object.keys(form.data) as Path<T>[]).forEach((key) =>

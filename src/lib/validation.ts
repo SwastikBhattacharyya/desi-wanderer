@@ -6,21 +6,18 @@ export type ValidatedActionResult = {
   message: string;
 };
 
-export function validatedAction<S = undefined>(
-  schema: z.ZodTypeAny,
+export function validatedAction<T extends z.ZodTypeAny, S = undefined>(
+  schema: T,
   action: S extends undefined
-    ? (data: z.infer<z.infer<typeof schema>>) => Promise<ValidatedActionResult>
-    : (
-        data: z.infer<z.infer<typeof schema>>,
-        params: S,
-      ) => Promise<ValidatedActionResult>,
+    ? (data: z.infer<T>) => Promise<ValidatedActionResult>
+    : (data: z.infer<T>, params: S) => Promise<ValidatedActionResult>,
 ) {
   return async (
     ...args: S extends undefined
-      ? [data: z.infer<typeof schema>]
-      : [data: z.infer<typeof schema>, params: S]
+      ? [data: z.infer<T>]
+      : [data: z.infer<T>, params: S]
   ): Promise<ValidatedActionResult> => {
-    const [data, optionalParams] = args as [z.infer<typeof schema>, S];
+    const [data, optionalParams] = args as [z.infer<T>, S];
     const parseResult = schema.safeParse(data);
     if (!parseResult.success)
       return {
@@ -31,7 +28,10 @@ export function validatedAction<S = undefined>(
   };
 }
 
-export function withToast(action: Promise<ValidatedActionResult>) {
+export function withToast(
+  action: Promise<ValidatedActionResult>,
+  loadingMessage?: string,
+) {
   toast.promise(
     async () => {
       const result = await action;
@@ -39,7 +39,7 @@ export function withToast(action: Promise<ValidatedActionResult>) {
       return result;
     },
     {
-      loading: "Signing up...",
+      loading: loadingMessage ?? "Please wait",
       success: (data: ValidatedActionResult) => data.message,
       error: (data: ValidatedActionResult) => data.message,
     },
