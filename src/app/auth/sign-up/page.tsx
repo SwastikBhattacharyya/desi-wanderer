@@ -10,7 +10,7 @@ export default function SignUp() {
           Create an account to get started
         </p>
       </div>
-      <div className="flex flex-col gap-y-2">
+      <div className="flex flex-col gap-y-2 select-none">
         <SignUpForm />
         <div className="flex gap-x-1 lowercase">
           <p>Already have an account?</p>
