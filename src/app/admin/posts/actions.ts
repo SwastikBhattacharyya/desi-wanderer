@@ -1,40 +1,20 @@
 "use server";
 
 import { db } from "@/db";
-import { post, user } from "@/db/schema";
-import { validatedActionWithUser } from "@/lib/validation";
-import { eq } from "drizzle-orm";
-import { unstable_cacheTag as cacheTag, revalidateTag } from "next/cache";
-import { PostType, newPostSchema } from "./types";
-
-export async function getPostsTableData() {
-  "use cache";
-
-  const rows: PostType[] = await db
-    .select({
-      id: post.id,
-      slug: post.slug,
-      title: post.title,
-      authorName: user.name,
-      published: post.published,
-      createdAt: post.createdAt,
-      updatedAt: post.updatedAt,
-    })
-    .from(post)
-    .innerJoin(user, eq(user.id, post.authorId));
-
-  cacheTag("posts");
-  return rows;
-}
+import { post } from "@/db/schema";
+import { actionWithUser, validatedActionWithUser } from "@/lib/validation";
+import { inArray } from "drizzle-orm";
+import { revalidateTag } from "next/cache";
+import { newPostSchema } from "./types";
 
 export const createPost = validatedActionWithUser(
   newPostSchema,
-  async (data, user) => {
+  async (data, userSession) => {
     try {
       await db.insert(post).values({
         title: data.title === "" ? null : data.title,
         description: data.description === "" ? null : data.title,
-        authorId: user.id,
+        authorId: userSession.id,
         published: false,
       });
     } catch {
@@ -45,7 +25,26 @@ export const createPost = validatedActionWithUser(
       };
     }
 
-    revalidateTag("posts");
+    revalidateTag(`post-${userSession.id}`);
     return { success: true, message: "Successfully created new post" };
+  },
+);
+
+type DeletePostsParams = string[];
+
+export const deletePosts = actionWithUser<DeletePostsParams>(
+  async (userSession, postIds) => {
+    try {
+      await db.delete(post).where(inArray(post.id, postIds));
+    } catch {
+      return {
+        success: false,
+        message:
+          "An unexpected error occured while deleting post, please try again",
+      };
+    }
+
+    revalidateTag(`post-${userSession.id}`);
+    return { success: true, message: "Successfully deleted post(s)" };
   },
 );
