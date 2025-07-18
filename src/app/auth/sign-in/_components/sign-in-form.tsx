@@ -1,5 +1,6 @@
 "use client";
 
+import { InputContainer } from "@/app/_components/input-container";
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
 import { Input, InputMessage } from "@/components/ui/input";
@@ -7,7 +8,6 @@ import { PasswordInput } from "@/components/ui/password-input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
-import { InputContainer } from "../../_components/input-container";
 import { signIn } from "../actions";
 import { signInSchema } from "../types";
 
@@ -37,7 +37,7 @@ export function SignInForm() {
         });
         return action;
       }}
-      toastLoadingMessage="Signing in"
+      toastLoadingMessage="Signing In..."
     >
       <div className="flex flex-col gap-y-1">
         <InputContainer>

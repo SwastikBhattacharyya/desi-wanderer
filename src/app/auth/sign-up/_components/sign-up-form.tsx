@@ -1,12 +1,12 @@
 "use client";
 
+import { InputContainer } from "@/app/_components/input-container";
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
 import { Input, InputMessage } from "@/components/ui/input";
 import { PasswordInput } from "@/components/ui/password-input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { InputContainer } from "../../_components/input-container";
 import { signUp } from "../actions";
 import { signUpSchema } from "../types";
 
@@ -27,7 +27,7 @@ export function SignUpForm() {
       control={control}
       resetField={resetField}
       validatedAction={signUp}
-      toastLoadingMessage="Signing up"
+      toastLoadingMessage="Signing Up..."
     >
       <div className="flex flex-col gap-y-1">
         <InputContainer>
