@@ -3,6 +3,7 @@
 import { cn } from "@/lib/cn";
 import { Slot } from "@radix-ui/react-slot";
 import { IconX } from "@tabler/icons-react";
+import dynamic from "next/dynamic";
 import {
   ComponentProps,
   createContext,
@@ -11,6 +12,7 @@ import {
   useContext,
   useRef,
 } from "react";
+import { createPortal } from "react-dom";
 import { Button } from "./button";
 
 type DialogTriggerProps = ComponentProps<"button"> & {
@@ -40,17 +42,18 @@ export function Dialog({ children }: { children: ReactNode }) {
 export function DialogTrigger({
   asChild,
   className,
+  openConditionFn = () => true,
   children,
-}: DialogTriggerProps) {
+}: DialogTriggerProps & {
+  openConditionFn?: () => boolean;
+}) {
   const Comp = asChild ? Slot : "button";
   const { dialogRef } = useDialog();
 
   return (
     <Comp
       className={className}
-      onClick={() => {
-        dialogRef.current?.showModal();
-      }}
+      onClick={() => openConditionFn() && dialogRef.current?.showModal()}
     >
       {children}
     </Comp>
@@ -78,18 +81,61 @@ export function DialogHeader({ children }: { children: ReactNode }) {
   );
 }
 
-export function DialogMenu({ className, children }: ComponentProps<"dialog">) {
+const DialogMenuComponent = ({
+  className,
+  children,
+}: ComponentProps<"dialog">) => {
   const { dialogRef } = useDialog();
 
   return (
-    <dialog
-      className={cn(
-        "top-1/2 left-1/2 h-[400px] w-[400px] -translate-x-1/2 -translate-y-1/2 transform gap-y-4 overflow-y-hidden rounded-xl bg-surface p-6 text-on-surface shadow-sm shadow-background/40 select-none open:flex open:flex-col",
-        className,
+    <>
+      {createPortal(
+        <dialog
+          className={cn(
+            "top-1/2 left-1/2 h-[400px] w-[400px] -translate-x-1/2 -translate-y-1/2 transform gap-y-4 overflow-y-hidden rounded-xl bg-surface p-6 text-on-surface shadow-sm shadow-background/40 select-none open:flex open:flex-col",
+            className,
+          )}
+          ref={dialogRef}
+        >
+          {children}
+        </dialog>,
+        document.body,
       )}
-      ref={dialogRef}
+    </>
+  );
+};
+export const DialogMenu = dynamic(() => Promise.resolve(DialogMenuComponent), {
+  ssr: false,
+});
+
+export function DialogNoButton() {
+  const { dialogRef } = useDialog();
+
+  return (
+    <Button
+      className="w-20"
+      onClick={async () => {
+        dialogRef.current?.close();
+      }}
     >
-      {children}
-    </dialog>
+      No
+    </Button>
+  );
+}
+
+export function DialogYesButton({ onClick }: { onClick: () => void }) {
+  const { dialogRef } = useDialog();
+
+  return (
+    <Button
+      className="w-20"
+      variant="error"
+      onClick={async () => {
+        onClick();
+        dialogRef.current?.close();
+      }}
+    >
+      Yes
+    </Button>
   );
 }
