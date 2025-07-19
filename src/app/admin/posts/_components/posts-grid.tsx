@@ -68,14 +68,15 @@ export function PostsGrid({ posts }: { posts: PostType[] }) {
     {
       field: "createdAt",
       flex: 1,
-      minWidth: 140,
+      minWidth: 160,
       filter: true,
       resizable: false,
+      sort: "desc",
     },
     {
       field: "updatedAt",
       flex: 1,
-      minWidth: 140,
+      minWidth: 160,
       filter: true,
       resizable: false,
     },

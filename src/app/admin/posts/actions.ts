@@ -25,7 +25,7 @@ export const createPost = validatedActionWithUser(
       };
     }
 
-    revalidateTag(`post-${userSession.id}`);
+    revalidateTag("posts");
     return { success: true, message: "Successfully created new post" };
   },
 );
@@ -33,7 +33,7 @@ export const createPost = validatedActionWithUser(
 type DeletePostsParams = string[];
 
 export const deletePosts = actionWithUser<DeletePostsParams>(
-  async (userSession, postIds) => {
+  async (_, postIds) => {
     try {
       await db.delete(post).where(inArray(post.id, postIds));
     } catch {
@@ -44,7 +44,7 @@ export const deletePosts = actionWithUser<DeletePostsParams>(
       };
     }
 
-    revalidateTag(`post-${userSession.id}`);
+    revalidateTag("posts");
     return { success: true, message: "Successfully deleted post(s)" };
   },
 );
