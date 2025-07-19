@@ -11,7 +11,7 @@ export default function SignIn() {
         </p>
       </div>
       <SignInForm />
-      <div className="flex gap-x-1 lowercase">
+      <div className="flex gap-x-1 lowercase select-none">
         <p>Don&apos;t have an account?</p>
         <Link href="/auth/sign-up">Sign Up</Link>
       </div>

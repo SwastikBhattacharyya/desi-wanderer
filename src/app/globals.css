@@ -28,6 +28,14 @@
     @apply bg-background font-archivo text-on-background selection:bg-primary selection:text-on-primary;
   }
 
+  body:has(dialog[open]) {
+    @apply overflow-hidden;
+  }
+
+  body:has(dialog[open]) #body {
+    @apply bg-background/40 blur-xl;
+  }
+
   a {
     @apply text-primary;
   }

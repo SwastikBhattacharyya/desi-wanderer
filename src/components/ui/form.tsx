@@ -1,6 +1,6 @@
 "use client";
 
-import { ValidatedActionResult, withToast } from "@/lib/validation";
+import { ActionResult, withToast } from "@/lib/validation";
 import { ComponentProps } from "react";
 import {
   Control,
@@ -10,12 +10,12 @@ import {
 } from "react-hook-form";
 import z from "zod";
 
-type FormProps<T extends z.ZodTypeAny> = Omit<
+type FormProps<T extends z.ZodTypeAny, S = undefined> = Omit<
   ComponentProps<typeof RHFForm>,
   "control"
 > & {
   control: Control<z.infer<T>>;
-  validatedAction: (data: z.infer<T>) => Promise<ValidatedActionResult>;
+  validatedAction: (data: z.infer<T>) => Promise<ActionResult<S>>;
   resetField: UseFormResetField<z.infer<T>>;
   displayToast?: boolean;
   toastLoadingMessage?: string;

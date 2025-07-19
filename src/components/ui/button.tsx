@@ -23,7 +23,7 @@ export function Button({
   return (
     <Comp
       className={cn(
-        "flex cursor-pointer items-center justify-center gap-x-2 rounded-md lowercase transition-[background_ring_border] duration-200 ease-in-out outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50",
+        "flex cursor-pointer items-center-safe justify-center-safe gap-x-2 rounded-md lowercase transition-[background_ring_border] duration-200 ease-in-out outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50",
         {
           "border-primary bg-primary text-on-primary hover:bg-primary/85 focus-visible:bg-primary/85 focus-visible:ring-primary/85 focus-visible:ring-offset-background":
             variant === "primary",

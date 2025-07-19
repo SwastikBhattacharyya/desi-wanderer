@@ -1,6 +1,6 @@
 {
   "name": "desi-wanderer",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack",
@@ -10,11 +10,13 @@
   },
   "dependencies": {
     "@hookform/resolvers": "^5.1.1",
-    "@neondatabase/serverless": "^1.0.1",
     "@radix-ui/react-dropdown-menu": "^2.1.15",
     "@radix-ui/react-select": "^2.2.5",
     "@radix-ui/react-slot": "^1.2.3",
     "@tabler/icons-react": "^3.34.0",
+    "@vercel/postgres": "^0.10.0",
+    "ag-grid-community": "^34.0.2",
+    "ag-grid-react": "^34.0.2",
     "babel-plugin-react-compiler": "19.1.0-rc.2",
     "better-auth": "^1.2.12",
     "clsx": "^2.1.1",

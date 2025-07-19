@@ -10,7 +10,7 @@ export default function AuthLayout({
       <Image
         className="-z-10 object-cover object-center blur-md brightness-40"
         src="/auth-background.jpg"
-        alt="A serene night scene with a shining moon above mountain silhouettes, reflecting in a calm pond surrounded by lush greenery and stars."
+        alt="A stunning view of the Taj Mahal during sunset, surrounded by colorful skies and a peaceful ambiance."
         fill={true}
       />
       <main className="flex h-full items-center-safe justify-center-safe">

@@ -5,6 +5,27 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.4.0] - 2025-07-19
+
+### Added
+
+- Add RBAC and ABAC for /admin pages
+- Add ABAC pattern and define user roles and permissions
+- Add deletion functionality for posts and per user fetching
+- Add portals for dialogs and return payloads for validated actions
+- Add table in /admin/posts page with an action to create new post
+- Add dialog ui component with backdrop styling
+- Add admin sidebar component with layout and app logo with favicon
+
+### Changed
+
+- Update drizzle to use vercel postgres driver and add post table
+- Update validated action pattern to support auth session check
+
+### Documentation
+
+- Update changelog and package.json
+
 ## [0.3.0] - 2025-07-13
 
 ### Added
@@ -36,6 +57,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [0.1.0] - 2025-07-05
 
+[0.4.0]: https://github.com/SwastikBhattacharyya/desi-wanderer/compare/v0.3.0..v0.4.0
 [0.3.0]: https://github.com/SwastikBhattacharyya/desi-wanderer/compare/v0.2.0..v0.3.0
 [0.2.0]: https://github.com/SwastikBhattacharyya/desi-wanderer/compare/v0.1.0..v0.2.0
 
