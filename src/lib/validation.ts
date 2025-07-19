@@ -1,21 +1,12 @@
+import { User } from "better-auth";
 import toast from "react-hot-toast";
 import z from "zod";
 import { getUser } from "./actions";
 
-export type ValidatedActionResult<T> = {
+export type ActionResult<T> = {
   success: boolean;
   message: string;
   payload?: T;
-};
-
-type UserType = {
-  id: string;
-  name: string;
-  emailVerified: boolean;
-  email: string;
-  createdAt: Date;
-  updatedAt: Date;
-  image?: string | null | undefined | undefined;
 };
 
 export function validatedAction<
@@ -25,14 +16,14 @@ export function validatedAction<
 >(
   schema: T,
   action: S extends undefined
-    ? (data: z.infer<T>) => Promise<ValidatedActionResult<U>>
-    : (data: z.infer<T>, params: S) => Promise<ValidatedActionResult<U>>,
+    ? (data: z.infer<T>) => Promise<ActionResult<U>>
+    : (data: z.infer<T>, params: S) => Promise<ActionResult<U>>,
 ) {
   return async (
     ...args: S extends undefined
       ? [data: z.infer<T>]
       : [data: z.infer<T>, params: S]
-  ): Promise<ValidatedActionResult<U>> => {
+  ): Promise<ActionResult<U>> => {
     const [data, optionalParams] = args as [z.infer<T>, S];
     const parseResult = schema.safeParse(data);
     if (!parseResult.success)
@@ -51,18 +42,14 @@ export function validatedActionWithUser<
 >(
   schema: T,
   action: S extends undefined
-    ? (data: z.infer<T>, user: UserType) => Promise<ValidatedActionResult<U>>
-    : (
-        data: z.infer<T>,
-        user: UserType,
-        params: S,
-      ) => Promise<ValidatedActionResult<U>>,
+    ? (data: z.infer<T>, user: User) => Promise<ActionResult<U>>
+    : (data: z.infer<T>, user: User, params: S) => Promise<ActionResult<U>>,
 ) {
   return async (
     ...args: S extends undefined
       ? [data: z.infer<T>]
       : [data: z.infer<T>, params: S]
-  ): Promise<ValidatedActionResult<U>> => {
+  ): Promise<ActionResult<U>> => {
     const [data, optionalParams] = args as [z.infer<T>, S];
     const parseResult = schema.safeParse(data);
     if (!parseResult.success)
@@ -83,8 +70,8 @@ export function validatedActionWithUser<
 
 export function actionWithUser<T = undefined, S = undefined>(
   action: T extends undefined
-    ? (user: UserType) => Promise<ValidatedActionResult<S>>
-    : (user: UserType, params: T) => Promise<ValidatedActionResult<S>>,
+    ? (user: User) => Promise<ActionResult<S>>
+    : (user: User, params: T) => Promise<ActionResult<S>>,
 ) {
   return async (...args: T extends undefined ? [] : [params: T]) => {
     const [optionalParams] = args as [T];
@@ -99,7 +86,7 @@ export function actionWithUser<T = undefined, S = undefined>(
 }
 
 export function withToast<T = undefined>(
-  action: Promise<ValidatedActionResult<T>>,
+  action: Promise<ActionResult<T>>,
   loadingMessage?: string,
 ) {
   toast.promise(
@@ -110,8 +97,8 @@ export function withToast<T = undefined>(
     },
     {
       loading: loadingMessage ?? "Please wait",
-      success: (data: ValidatedActionResult<T>) => data.message,
-      error: (data: ValidatedActionResult<T>) => data.message,
+      success: (data: ActionResult<T>) => data.message,
+      error: (data: ActionResult<T>) => data.message,
     },
   );
 }

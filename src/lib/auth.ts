@@ -3,7 +3,9 @@ import { account, session, user, verification } from "@/db/schema";
 import { betterAuth } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
 import { nextCookies } from "better-auth/next-js";
+import { admin } from "better-auth/plugins";
 import { resend } from "./email";
+import { ac, adminRole, authorRole, userRole } from "./permissions";
 
 export const auth = betterAuth({
   emailAndPassword: {
@@ -38,5 +40,16 @@ export const auth = betterAuth({
       clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
     },
   },
-  plugins: [nextCookies()],
+  plugins: [
+    nextCookies(),
+    admin({
+      ac,
+      roles: {
+        adminRole,
+        authorRole,
+        userRole,
+      },
+      defaultRole: "userRole",
+    }),
+  ],
 });

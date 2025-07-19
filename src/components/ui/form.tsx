@@ -1,6 +1,6 @@
 "use client";
 
-import { ValidatedActionResult, withToast } from "@/lib/validation";
+import { ActionResult, withToast } from "@/lib/validation";
 import { ComponentProps } from "react";
 import {
   Control,
@@ -15,7 +15,7 @@ type FormProps<T extends z.ZodTypeAny, S = undefined> = Omit<
   "control"
 > & {
   control: Control<z.infer<T>>;
-  validatedAction: (data: z.infer<T>) => Promise<ValidatedActionResult<S>>;
+  validatedAction: (data: z.infer<T>) => Promise<ActionResult<S>>;
   resetField: UseFormResetField<z.infer<T>>;
   displayToast?: boolean;
   toastLoadingMessage?: string;
