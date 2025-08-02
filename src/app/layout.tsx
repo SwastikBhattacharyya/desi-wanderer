@@ -1,4 +1,6 @@
+import { cn } from "@/lib/utils";
 import type { Metadata } from "next";
+import { Open_Sans } from "next/font/google";
 import { ReactNode } from "react";
 import "./globals.css";
 
@@ -8,6 +10,12 @@ export const metadata: Metadata = {
     "Explore the latest travel stories, tips, and destinations across India with Desi Wanderer - your go-to platform for authentic Indian travel experiences!",
 };
 
+const openSans = Open_Sans({
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--font-open-sans",
+});
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -15,7 +23,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className="antialiased">{children}</body>
+      <body className={cn("antialiased", openSans.variable)}>{children}</body>
     </html>
   );
 }
