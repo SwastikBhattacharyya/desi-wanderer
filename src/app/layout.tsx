@@ -1,7 +1,9 @@
+import { Toaster } from "@/components/ui/sonner";
+import { ToastFromSearchParams } from "@/features/toast/components/toast-from-search-params";
 import { cn } from "@/lib/utils";
 import type { Metadata } from "next";
 import { Open_Sans } from "next/font/google";
-import { ReactNode } from "react";
+import { ReactNode, Suspense } from "react";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -23,7 +25,15 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={cn("antialiased", openSans.variable)}>{children}</body>
+      <body className={cn("antialiased", openSans.variable)}>
+        <aside>
+          <Toaster richColors />
+          <Suspense>
+            <ToastFromSearchParams />
+          </Suspense>
+        </aside>
+        {children}
+      </body>
     </html>
   );
 }
