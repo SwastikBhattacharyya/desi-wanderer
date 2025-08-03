@@ -5,6 +5,7 @@ import {
   pgTable,
   text,
   timestamp,
+  uuid,
 } from "drizzle-orm/pg-core";
 
 export const user = pgTable("user", {
@@ -72,4 +73,23 @@ export const rateLimit = pgTable("rate_limit", {
   key: text("key"),
   count: integer("count"),
   lastRequest: bigint("last_request", { mode: "number" }),
+});
+
+export const post = pgTable("post", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  slug: text("slug").unique(),
+  title: text("title").notNull(),
+  description: text("description").notNull(),
+  content: text("content"),
+  authorId: text("author_id")
+    .references(() => user.id)
+    .notNull(),
+  published: boolean("published").notNull().default(false),
+  createdAt: timestamp("created_at")
+    .notNull()
+    .$defaultFn(() => new Date()),
+  updatedAt: timestamp("updated_at")
+    .notNull()
+    .$defaultFn(() => new Date())
+    .$onUpdate(() => new Date()),
 });

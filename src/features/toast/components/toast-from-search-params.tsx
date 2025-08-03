@@ -21,6 +21,9 @@ const toasts = {
       "An unexpected error occured while signing in, please try again",
     );
   },
+  pageRequiresSession: () => {
+    toast.error("You must be signed in to access this page");
+  },
 };
 
 export function ToastFromSearchParams() {
