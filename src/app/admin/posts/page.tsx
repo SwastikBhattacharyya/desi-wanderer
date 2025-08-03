@@ -25,7 +25,7 @@ export default async function Posts() {
             <NewPost />
           </div>
         </div>
-        <PostsTable />
+        <PostsTable userId={data.user.id} />
       </div>
     </PostProvider>
   );

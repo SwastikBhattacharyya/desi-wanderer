@@ -2,6 +2,7 @@
 
 import { db } from "@/db";
 import { post } from "@/db/schema";
+import { hasPermissions } from "@/features/auth/server/actions/has-permissions";
 import { auth } from "@/lib/auth";
 import { revalidateTag } from "next/cache";
 import { headers } from "next/headers";
@@ -20,6 +21,12 @@ export async function newPost(data: NewPostType) {
     return {
       success: false,
       message: "You must be signed in to perform this action",
+    };
+
+  if (!(await hasPermissions(userSession.user.id, { post: ["create"] })))
+    return {
+      success: false,
+      message: "You do not have the permissions to perform this action",
     };
 
   try {

@@ -12,7 +12,7 @@ export function UserProfile({ user }: { user: User }) {
         ></AvatarImage>
         <AvatarFallback>{initials(user?.name as string)}</AvatarFallback>
       </Avatar>
-      <p>{user?.name}</p>
+      <p className="text-center">{user?.name}</p>
     </div>
   );
 }

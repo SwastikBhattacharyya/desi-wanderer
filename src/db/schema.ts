@@ -2,11 +2,14 @@ import {
   bigint,
   boolean,
   integer,
+  pgEnum,
   pgTable,
   text,
   timestamp,
   uuid,
 } from "drizzle-orm/pg-core";
+
+export const rolesEnum = pgEnum("role", ["adminRole", "userRole"]);
 
 export const user = pgTable("user", {
   id: text("id").primaryKey(),
@@ -22,6 +25,10 @@ export const user = pgTable("user", {
   updatedAt: timestamp("updated_at")
     .$defaultFn(() => /* @__PURE__ */ new Date())
     .notNull(),
+  role: rolesEnum("role").default("userRole"),
+  banned: boolean("banned"),
+  banReason: text("ban_reason"),
+  banExpires: timestamp("ban_expires"),
 });
 
 export const session = pgTable("session", {

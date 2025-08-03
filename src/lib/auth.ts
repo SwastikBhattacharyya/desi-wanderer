@@ -3,6 +3,8 @@ import { account, rateLimit, session, user, verification } from "@/db/schema";
 import { betterAuth } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
 import { nextCookies } from "better-auth/next-js";
+import { admin } from "better-auth/plugins";
+import { ac, adminRole, userRole } from "./permissions";
 import { resend } from "./resend";
 
 export const auth = betterAuth({
@@ -42,5 +44,15 @@ export const auth = betterAuth({
       clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
     },
   },
-  plugins: [nextCookies()],
+  plugins: [
+    nextCookies(),
+    admin({
+      ac,
+      roles: {
+        adminRole,
+        userRole,
+      },
+      defaultRole: "userRole",
+    }),
+  ],
 });
