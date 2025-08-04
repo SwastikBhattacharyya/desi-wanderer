@@ -1,6 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
+import { useGrid } from "@/features/grid/contexts/grid";
 import {
   AllCommunityModule,
   ColDef,
@@ -10,7 +11,6 @@ import {
 } from "ag-grid-community";
 import { AgGridReact, CustomCellRendererProps } from "ag-grid-react";
 import { Pencil } from "lucide-react";
-import { usePost } from "../contexts/posts";
 import { PostType } from "../schemas/post";
 import { DeletePost } from "./delete-post";
 
@@ -26,7 +26,7 @@ const theme = themeQuartz.withPart(colorSchemeLightWarm).withParams({
 });
 
 export function PostsGrid({ posts }: { posts: PostType[] }) {
-  const { setSelectedRows } = usePost();
+  const { setSelectedRows } = useGrid();
 
   const columnDefs: ColDef<
     PostType & {

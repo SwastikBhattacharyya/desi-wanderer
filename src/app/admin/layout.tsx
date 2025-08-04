@@ -17,12 +17,12 @@ export default async function AdminLayout({
   });
   if (!data?.session) {
     const params = new URLSearchParams({ toastId: "pageRequiresSession" });
-    redirect(`/?${params.toString()}`);
+    redirect(`/auth/sign-in?${params.toString()}`);
   }
 
   return (
     <SidebarProvider>
-      <AdminSidebar user={data.user} />
+      <AdminSidebar user={data.user} userRole={data.user.role ?? "userRole"} />
       <SidebarInset className="h-dvh overflow-hidden">
         <SidebarTrigger />
         <main className="h-full px-4">

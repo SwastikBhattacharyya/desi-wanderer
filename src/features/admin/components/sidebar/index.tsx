@@ -12,7 +12,13 @@ import Image from "next/image";
 import { AdminSidebarNav } from "./nav";
 import { UserProfile } from "./user-profile";
 
-export function AdminSidebar({ user }: { user: User }) {
+export function AdminSidebar({
+  user,
+  userRole,
+}: {
+  user: User;
+  userRole: string;
+}) {
   return (
     <Sidebar>
       <SidebarHeader className="flex flex-col items-center-safe gap-y-2">
@@ -32,7 +38,7 @@ export function AdminSidebar({ user }: { user: User }) {
         <SidebarGroup>
           <SidebarGroupContent>
             <SidebarMenu>
-              <AdminSidebarNav />
+              <AdminSidebarNav userRole={userRole} />
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>

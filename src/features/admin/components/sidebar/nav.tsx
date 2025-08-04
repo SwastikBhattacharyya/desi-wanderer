@@ -1,25 +1,33 @@
 "use client";
 
 import { SidebarMenuButton, SidebarMenuItem } from "@/components/ui/sidebar";
-import { House, PencilLine } from "lucide-react";
+import { House, PencilLine, User } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-const items = [
-  {
-    title: "Dashboard",
-    url: "/admin",
-    icon: House,
-  },
-  {
-    title: "Posts",
-    url: "/admin/posts",
-    icon: PencilLine,
-  },
-];
-
-export function AdminSidebarNav() {
+export function AdminSidebarNav({ userRole }: { userRole: string }) {
   const pathName = usePathname();
+  const items = [
+    {
+      title: "Dashboard",
+      url: "/admin",
+      icon: House,
+    },
+    {
+      title: "Posts",
+      url: "/admin/posts",
+      icon: PencilLine,
+    },
+    ...(userRole === "adminRole"
+      ? [
+          {
+            title: "Users",
+            url: "/admin/users",
+            icon: User,
+          },
+        ]
+      : []),
+  ];
 
   return (
     <>

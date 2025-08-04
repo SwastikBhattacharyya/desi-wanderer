@@ -9,28 +9,28 @@ import {
   useState,
 } from "react";
 
-type PostContextType = {
+type GridContextType = {
   selectedRows: string[];
   setSelectedRows: Dispatch<SetStateAction<string[]>>;
 };
-const PostContext = createContext<PostContextType | undefined>(undefined);
-export function usePost() {
-  const context = useContext(PostContext);
-  if (!context) throw new Error("usePost must be used within PostProvider");
+const GridContext = createContext<GridContextType | undefined>(undefined);
+export function useGrid() {
+  const context = useContext(GridContext);
+  if (!context) throw new Error("useGrid must be used within GridProvider");
   return context;
 }
 
-export function PostProvider({ children }: { children: ReactNode }) {
+export function GridProvider({ children }: { children: ReactNode }) {
   const [selectedRows, setSelectedRows] = useState<string[]>([]);
 
   return (
-    <PostContext.Provider
+    <GridContext.Provider
       value={{
         selectedRows,
         setSelectedRows,
       }}
     >
       {children}
-    </PostContext.Provider>
+    </GridContext.Provider>
   );
 }

@@ -44,10 +44,15 @@ export const auth = betterAuth({
       clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
     },
   },
+  onAPIError: {
+    errorURL: "/auth/error",
+  },
   plugins: [
     nextCookies(),
     admin({
       ac,
+      bannedUserMessage:
+        "You have been banned from Desi Wanderer. Please contact support if you think this is an error.",
       roles: {
         adminRole,
         userRole,

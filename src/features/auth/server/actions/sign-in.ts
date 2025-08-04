@@ -2,6 +2,7 @@
 
 import { auth } from "@/lib/auth";
 import { APIError } from "better-auth/api";
+import { revalidateTag } from "next/cache";
 import { headers } from "next/headers";
 import { safeParse } from "zod";
 import { signInSchema, SignInType } from "../../schemas/sign-in";
@@ -30,5 +31,6 @@ export async function signIn(data: SignInType) {
       };
   }
 
+  revalidateTag("users");
   return { success: true, message: "Signed in successfully" };
 }

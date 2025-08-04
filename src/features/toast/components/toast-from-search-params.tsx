@@ -1,5 +1,6 @@
 "use client";
 
+import { revalidateUsers } from "@/features/auth/server/actions/revalidate-users";
 import { usePathname, useSearchParams } from "next/navigation";
 import { useEffect } from "react";
 import { toast } from "sonner";
@@ -14,6 +15,7 @@ const toasts = {
     );
   },
   googleSignInSuccessful: () => {
+    revalidateUsers();
     toast.success("Signed in successfully");
   },
   googleSignInError: () => {
@@ -23,6 +25,9 @@ const toasts = {
   },
   pageRequiresSession: () => {
     toast.error("You must be signed in to access this page");
+  },
+  pageRequiresPermission: () => {
+    toast.error("You do not have the permissions to access this page");
   },
 };
 

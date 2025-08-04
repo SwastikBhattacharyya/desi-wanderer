@@ -8,7 +8,7 @@ export default async function Dashboard() {
   });
   if (!data?.session) {
     const params = new URLSearchParams({ toastId: "pageRequiresSession" });
-    redirect(`/?${params.toString()}`);
+    redirect(`/auth/sign-in?${params.toString()}`);
   }
 
   return <></>;
