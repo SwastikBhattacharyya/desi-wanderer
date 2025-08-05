@@ -2,10 +2,14 @@ import {
   bigint,
   boolean,
   integer,
+  pgEnum,
   pgTable,
   text,
   timestamp,
+  uuid,
 } from "drizzle-orm/pg-core";
+
+export const rolesEnum = pgEnum("role", ["adminRole", "userRole"]);
 
 export const user = pgTable("user", {
   id: text("id").primaryKey(),
@@ -21,6 +25,10 @@ export const user = pgTable("user", {
   updatedAt: timestamp("updated_at")
     .$defaultFn(() => /* @__PURE__ */ new Date())
     .notNull(),
+  role: rolesEnum("role").default("userRole"),
+  banned: boolean("banned").notNull().default(false),
+  banReason: text("ban_reason"),
+  banExpires: timestamp("ban_expires"),
 });
 
 export const session = pgTable("session", {
@@ -72,4 +80,23 @@ export const rateLimit = pgTable("rate_limit", {
   key: text("key"),
   count: integer("count"),
   lastRequest: bigint("last_request", { mode: "number" }),
+});
+
+export const post = pgTable("post", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  slug: text("slug").unique(),
+  title: text("title").notNull(),
+  description: text("description").notNull(),
+  content: text("content"),
+  authorId: text("author_id")
+    .references(() => user.id)
+    .notNull(),
+  published: boolean("published").notNull().default(false),
+  createdAt: timestamp("created_at")
+    .notNull()
+    .$defaultFn(() => new Date()),
+  updatedAt: timestamp("updated_at")
+    .notNull()
+    .$defaultFn(() => new Date())
+    .$onUpdate(() => new Date()),
 });

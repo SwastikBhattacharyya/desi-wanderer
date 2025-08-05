@@ -3,6 +3,8 @@ import { account, rateLimit, session, user, verification } from "@/db/schema";
 import { betterAuth } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
 import { nextCookies } from "better-auth/next-js";
+import { admin } from "better-auth/plugins";
+import { ac, adminRole, userRole } from "./permissions";
 import { resend } from "./resend";
 
 export const auth = betterAuth({
@@ -42,5 +44,20 @@ export const auth = betterAuth({
       clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
     },
   },
-  plugins: [nextCookies()],
+  onAPIError: {
+    errorURL: "/auth/error",
+  },
+  plugins: [
+    nextCookies(),
+    admin({
+      ac,
+      bannedUserMessage:
+        "You have been banned from Desi Wanderer. Please contact support if you think this is an error.",
+      roles: {
+        adminRole,
+        userRole,
+      },
+      defaultRole: "userRole",
+    }),
+  ],
 });
