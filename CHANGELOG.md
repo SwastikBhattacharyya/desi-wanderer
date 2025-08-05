@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
 ---
+## [0.3.0](https://github.com/SwastikBhattacharyya/desi-wanderer/compare/v0.2.0..v0.3.0) - 2025-08-05
+
+### Features
+
+- **(admin)** add /admin/posts page for managing blog posts - ([0d2cd0c](https://github.com/SwastikBhattacharyya/desi-wanderer/commit/0d2cd0c4306df2302d090a22e0d688988fedf000)) - Swastik Bhattacharyya
+- **(auth)** add rbac in app - ([a63b11b](https://github.com/SwastikBhattacharyya/desi-wanderer/commit/a63b11b68c595f514cab42c0c327e36a36b815e2)) - Swastik Bhattacharyya
+- **(auth)** add /admin/users page for managing users - ([71d5c7a](https://github.com/SwastikBhattacharyya/desi-wanderer/commit/71d5c7a78b954aab3d29ec8ddbba13c610b1cd23)) - Swastik Bhattacharyya
+
+---
 ## [0.2.0](https://github.com/SwastikBhattacharyya/desi-wanderer/compare/v0.1.0..v0.2.0) - 2025-08-02
 
 ### Features
