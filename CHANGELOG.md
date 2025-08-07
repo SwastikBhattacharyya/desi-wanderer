@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
 ---
+## [0.4.0](https://github.com/SwastikBhattacharyya/desi-wanderer/compare/v0.3.0..v0.4.0) - 2025-08-07
+
+### Bug Fixes
+
+- **(admin)** fix incorrect date formatting and filtering in posts grid - ([d4b8ddf](https://github.com/SwastikBhattacharyya/desi-wanderer/commit/d4b8ddf7f78d8fe0f98d74d2754d8e71858a14bd)) - Swastik Bhattacharyya
+
+### Features
+
+- **(editor)** add rich text editor for editing posts - ([5d24085](https://github.com/SwastikBhattacharyya/desi-wanderer/commit/5d2408564608a9769f0274fa4988a134b807e885)) - Swastik Bhattacharyya
+
+---
 ## [0.3.0](https://github.com/SwastikBhattacharyya/desi-wanderer/compare/v0.2.0..v0.3.0) - 2025-08-05
 
 ### Features
