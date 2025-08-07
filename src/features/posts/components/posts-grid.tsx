@@ -1,6 +1,5 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
 import { useGrid } from "@/features/grid/contexts/grid";
 import {
   AllCommunityModule,
@@ -10,9 +9,10 @@ import {
   themeQuartz,
 } from "ag-grid-community";
 import { AgGridReact, CustomCellRendererProps } from "ag-grid-react";
-import { Pencil } from "lucide-react";
+import moment from "moment";
 import { PostType } from "../schemas/post";
 import { DeletePost } from "./delete-post";
+import { EditPost } from "./edit-post";
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 const theme = themeQuartz.withPart(colorSchemeLightWarm).withParams({
@@ -60,14 +60,26 @@ export function PostsGrid({ posts }: { posts: PostType[] }) {
       flex: 1,
       minWidth: 160,
       filter: true,
+      filterParams: {
+        includeTime: false,
+      },
       resizable: false,
+      cellRenderer: (data: CustomCellRendererProps) => {
+        return moment(data.value).format("MM/DD/YYYY");
+      },
     },
     {
       field: "updatedAt",
       flex: 1,
       minWidth: 160,
       filter: true,
+      filterParams: {
+        includeTime: false,
+      },
       resizable: false,
+      cellRenderer: (data: CustomCellRendererProps) => {
+        return moment(data.value).format("MM/DD/YYYY");
+      },
     },
     {
       field: "actions",
@@ -76,13 +88,7 @@ export function PostsGrid({ posts }: { posts: PostType[] }) {
       headerName: "Actions",
       cellRenderer: (row: CustomCellRendererProps) => (
         <div className="flex h-full w-full items-center-safe">
-          <Button
-            className="cursor-pointer hover:bg-transparent hover:text-primary focus-visible:bg-transparent focus-visible:text-primary"
-            variant="ghost"
-            size="icon"
-          >
-            <Pencil />
-          </Button>
+          <EditPost id={row.data.id} />
           <DeletePost id={row.data.id} />
         </div>
       ),

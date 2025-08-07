@@ -16,6 +16,7 @@ export function AdminSidebarNav({ userRole }: { userRole: string }) {
     {
       title: "Posts",
       url: "/admin/posts",
+      urlInclude: "/admin/posts/editor",
       icon: PencilLine,
     },
     ...(userRole === "adminRole"
@@ -33,7 +34,14 @@ export function AdminSidebarNav({ userRole }: { userRole: string }) {
     <>
       {items.map((item) => (
         <SidebarMenuItem key={item.url}>
-          <SidebarMenuButton asChild isActive={item.url === pathName}>
+          <SidebarMenuButton
+            asChild
+            isActive={
+              pathName === item.url ||
+              (item.urlInclude !== undefined &&
+                pathName.includes(item.urlInclude))
+            }
+          >
             <Link href={item.url}>
               <item.icon />
               <span>{item.title}</span>

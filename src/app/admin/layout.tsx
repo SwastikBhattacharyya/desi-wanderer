@@ -25,9 +25,9 @@ export default async function AdminLayout({
       <AdminSidebar user={data.user} userRole={data.user.role ?? "userRole"} />
       <SidebarInset className="h-dvh overflow-hidden">
         <SidebarTrigger />
-        <main className="h-full px-4">
+        <div className="h-full overflow-y-auto px-4">
           <Suspense>{children}</Suspense>
-        </main>
+        </div>
       </SidebarInset>
     </SidebarProvider>
   );

@@ -29,6 +29,12 @@ const toasts = {
   pageRequiresPermission: () => {
     toast.error("You do not have the permissions to access this page");
   },
+  editorQueryError: () => {
+    toast.error("Invalid post edit request");
+  },
+  postRequiresPermission: () => {
+    toast.error("You do not have the permissions to edit this post");
+  },
 };
 
 export function ToastFromSearchParams() {
