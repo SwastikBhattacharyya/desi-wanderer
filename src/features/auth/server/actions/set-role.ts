@@ -6,7 +6,7 @@ import { auth } from "@/lib/auth";
 import { eq } from "drizzle-orm";
 import { revalidateTag } from "next/cache";
 import { headers } from "next/headers";
-import { hasPermissions } from "./has-permissions";
+import { hasPermissions } from "../functions/has-permissions";
 
 export async function setRole(userId: string, role: "adminRole" | "userRole") {
   const userSession = await auth.api.getSession({

@@ -1,5 +1,3 @@
-"use server";
-
 import { auth } from "@/lib/auth";
 import { AppPermissions } from "@/lib/permissions";
 import { headers } from "next/headers";

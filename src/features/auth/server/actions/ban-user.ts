@@ -4,7 +4,7 @@ import { auth } from "@/lib/auth";
 import { APIError } from "better-auth/api";
 import { revalidateTag } from "next/cache";
 import { headers } from "next/headers";
-import { hasPermissions } from "./has-permissions";
+import { hasPermissions } from "../functions/has-permissions";
 
 export async function banUser(userId: string, reason: string) {
   const userSession = await auth.api.getSession({

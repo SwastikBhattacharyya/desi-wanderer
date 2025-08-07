@@ -1,6 +1,6 @@
 import { db } from "@/db";
 import { user } from "@/db/schema";
-import { hasPermissions } from "@/features/auth/server/actions/has-permissions";
+import { hasPermissions } from "@/features/auth/server/functions/has-permissions";
 import { unstable_cache } from "next/cache";
 import { UsersGrid } from "./users-grid";
 

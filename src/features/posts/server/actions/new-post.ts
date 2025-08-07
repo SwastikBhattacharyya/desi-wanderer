@@ -2,7 +2,7 @@
 
 import { db } from "@/db";
 import { post } from "@/db/schema";
-import { hasPermissions } from "@/features/auth/server/actions/has-permissions";
+import { hasPermissions } from "@/features/auth/server/functions/has-permissions";
 import { auth } from "@/lib/auth";
 import { revalidateTag } from "next/cache";
 import { headers } from "next/headers";

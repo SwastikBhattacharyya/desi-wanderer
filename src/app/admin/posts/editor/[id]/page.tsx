@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { db } from "@/db";
 import { post } from "@/db/schema";
-import { hasPermissions } from "@/features/auth/server/actions/has-permissions";
+import { hasPermissions } from "@/features/auth/server/functions/has-permissions";
 import { PostForm } from "@/features/editor/components/forms/post-form";
 import { PostEditor } from "@/features/editor/components/post-editor";
 import { auth } from "@/lib/auth";
