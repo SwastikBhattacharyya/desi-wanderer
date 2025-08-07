@@ -6,8 +6,8 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { SignInForm } from "@/features/auth/components/forms/sign-in-form";
-import { ButtonGoogle } from "@/features/auth/components/ui/button-google";
+import { ButtonGoogle } from "@/features/auth/components/buttons/button-google";
+import { SignInForm } from "@/features/auth/components/forms/sign-in";
 import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
 import Link from "next/link";

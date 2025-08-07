@@ -16,10 +16,10 @@ import {
 } from "ag-grid-community";
 import { AgGridReact, CustomCellRendererProps } from "ag-grid-react";
 import { toast } from "sonner";
-import { UserType } from "../schemas/user";
-import { setRole } from "../server/actions/set-role";
-import { BanUser } from "./ban-user";
-import { UnbanUser } from "./unban-user";
+import { UserType } from "../../schemas/user";
+import { setRole } from "../../server/actions/set-role";
+import { BanUser } from "../dialogs/ban-user";
+import { UnbanUser } from "../dialogs/unban-user";
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 const theme = themeQuartz.withPart(colorSchemeLightWarm).withParams({

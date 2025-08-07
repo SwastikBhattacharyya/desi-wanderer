@@ -10,9 +10,9 @@ import {
 } from "ag-grid-community";
 import { AgGridReact, CustomCellRendererProps } from "ag-grid-react";
 import moment from "moment";
-import { PostType } from "../schemas/post";
-import { DeletePost } from "./delete-post";
-import { EditPost } from "./edit-post";
+import { PostType } from "../../schemas/post";
+import { EditPost } from "../buttons/edit-post";
+import { DeletePost } from "../dialogs/delete-post";
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 const theme = themeQuartz.withPart(colorSchemeLightWarm).withParams({

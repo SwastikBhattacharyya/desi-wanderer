@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 import { db } from "@/db";
 import { post } from "@/db/schema";
 import { hasPermissions } from "@/features/auth/server/functions/has-permissions";
-import { PostForm } from "@/features/editor/components/forms/post-form";
+import { PostForm } from "@/features/editor/components/forms/post";
 import { PostEditor } from "@/features/editor/components/post-editor";
 import { auth } from "@/lib/auth";
 import { eq } from "drizzle-orm";

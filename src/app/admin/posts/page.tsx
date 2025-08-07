@@ -1,7 +1,7 @@
 import { GridProvider } from "@/features/grid/contexts/grid";
-import { DeletePosts } from "@/features/posts/components/delete-posts";
-import { NewPost } from "@/features/posts/components/new-post";
-import { PostsTable } from "@/features/posts/components/posts-table";
+import { DeletePosts } from "@/features/post/components/dialogs/delete-posts";
+import { NewPost } from "@/features/post/components/sheets/new-post";
+import { PostsTable } from "@/features/post/components/tables/posts-table";
 import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";

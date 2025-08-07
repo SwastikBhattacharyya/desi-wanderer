@@ -11,7 +11,7 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import { useState } from "react";
-import { NewPostForm } from "./forms/new-post-form";
+import { NewPostForm } from "../forms/new-post-form";
 
 export function NewPost() {
   const [open, setOpen] = useState(false);

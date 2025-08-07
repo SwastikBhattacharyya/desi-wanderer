@@ -5,6 +5,7 @@ import {
   Dialog,
   DialogClose,
   DialogContent,
+  DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogTitle,
@@ -24,8 +25,8 @@ import { Ban } from "lucide-react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
-import { banUserSchema, BanUserType } from "../schemas/ban-user";
-import { banUser } from "../server/actions/ban-user";
+import { banUserSchema, BanUserType } from "../../schemas/ban-user";
+import { banUser } from "../../server/actions/ban-user";
 
 export function BanUser({ id, disabled }: { id: string; disabled?: boolean }) {
   const [open, setOpen] = useState(false);
@@ -73,7 +74,9 @@ export function BanUser({ id, disabled }: { id: string; disabled?: boolean }) {
               <DialogTitle className="border-b px-6 py-4">Ban User</DialogTitle>
             </DialogHeader>
             <ScrollArea className="flex max-h-full flex-col gap-y-4 overflow-hidden px-4 pt-4 pb-2">
-              <p className="mb-2">Are you sure you want to ban this user?</p>
+              <DialogDescription className="mb-2">
+                Are you sure you want to ban this user?
+              </DialogDescription>
               <div className="m-1 flex flex-col gap-y-2">
                 <FormField
                   control={form.control}

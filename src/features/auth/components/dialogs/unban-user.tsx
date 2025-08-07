@@ -5,6 +5,7 @@ import {
   Dialog,
   DialogClose,
   DialogContent,
+  DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogTitle,
@@ -14,7 +15,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Check } from "lucide-react";
 import { useState, useTransition } from "react";
 import { toast } from "sonner";
-import { unbanUser } from "../server/actions/unban-user";
+import { unbanUser } from "../../server/actions/unban-user";
 
 export function UnbanUser({
   id,
@@ -43,7 +44,9 @@ export function UnbanUser({
           <DialogTitle className="border-b px-6 py-4">Unban User</DialogTitle>
         </DialogHeader>
         <ScrollArea className="flex max-h-full flex-col overflow-hidden px-4 pt-4 pb-2">
-          Are you sure you want to unban this user?
+          <DialogDescription>
+            Are you sure you want to unban this user?
+          </DialogDescription>
         </ScrollArea>
         <DialogFooter className="flex-row justify-end px-6 pb-4">
           <DialogClose asChild>
