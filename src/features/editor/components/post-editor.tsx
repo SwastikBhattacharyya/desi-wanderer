@@ -5,7 +5,7 @@ import { useState } from "react";
 
 import { useFormContext } from "react-hook-form";
 import { Editor } from "../../../components/blocks/editor";
-import { PostType } from "../schemas/post";
+import { SavePostType } from "../schemas/save-post";
 
 const initialValue = {
   root: {
@@ -41,7 +41,7 @@ export function PostEditor({ content }: { content: string | null }) {
   const [editorState, setEditorState] = useState<SerializedEditorState>(
     content !== null ? JSON.parse(content) : initialValue,
   );
-  const methods = useFormContext<PostType>();
+  const methods = useFormContext<SavePostType>();
 
   return (
     <Editor

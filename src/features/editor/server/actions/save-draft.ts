@@ -4,14 +4,14 @@ import { db } from "@/db";
 import { post } from "@/db/schema";
 import { hasPermissions } from "@/features/auth/server/functions/has-permissions";
 import { auth } from "@/lib/auth";
-import { eq } from "drizzle-orm";
+import { and, eq } from "drizzle-orm";
 import { revalidateTag } from "next/cache";
 import { headers } from "next/headers";
 import { safeParse } from "zod";
-import { postSchema, PostType } from "../../schemas/post";
+import { SavePostType, savePostSchema } from "../../schemas/save-post";
 
-export async function saveDraft(data: PostType) {
-  const parseResult = safeParse(postSchema, data);
+export async function saveDraft(id: string, data: SavePostType) {
+  const parseResult = safeParse(savePostSchema, data);
   if (!parseResult.success)
     return { success: false, message: parseResult.error.issues[0].message };
 
@@ -28,11 +28,11 @@ export async function saveDraft(data: PostType) {
     await db
       .update(post)
       .set(data)
-      .where(eq(post.authorId, userSession.user.id));
+      .where(and(eq(post.id, id), eq(post.authorId, userSession.user.id)));
   } else if (
     await hasPermissions(userSession.user.id, { post: ["edit:any"] })
   ) {
-    await db.update(post).set(data);
+    await db.update(post).set(data).where(eq(post.id, id));
   } else {
     return {
       success: false,

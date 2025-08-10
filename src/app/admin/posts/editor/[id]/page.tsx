@@ -31,7 +31,7 @@ export default async function Editor({
     async () => {
       return await db.select().from(post).where(eq(post.id, id)).limit(1);
     },
-    ["posts"],
+    ["posts", id],
     { tags: ["posts"] },
   );
 
@@ -64,16 +64,14 @@ export default async function Editor({
             </Link>
           </Button>
         </div>
-        <PostForm
-          title={postData.title}
-          description={postData.description}
-          content={postData.content}
-        >
+        <PostForm post={postData}>
           <div className="flex-y-1 flex h-full flex-col gap-y-2 overflow-hidden [@media(max-height:720px)]:min-h-[500px]">
             <PostEditor content={postData.content} />
           </div>
           <div className="flex justify-end-safe gap-x-2 py-2">
-            <Button type="submit">Save Draft</Button>
+            <Button className="cursor-pointer" type="submit">
+              Save Draft
+            </Button>
           </div>
         </PostForm>
       </div>

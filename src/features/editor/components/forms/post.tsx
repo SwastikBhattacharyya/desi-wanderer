@@ -11,42 +11,33 @@ import {
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { ReactNode, useEffect } from "react";
+import { ReactNode } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { useScreenWidth } from "../../hooks/use-screen-width";
-import { postSchema, PostType } from "../../schemas/post";
+import { PostType } from "../../schemas/post";
+import { SavePostType, savePostSchema } from "../../schemas/save-post";
 import { saveDraft } from "../../server/actions/save-draft";
 
 export function PostForm({
-  title,
-  description,
-  content,
+  post,
   children,
 }: {
-  title: string;
-  description: string;
-  content: string | null;
+  post: PostType;
   children: ReactNode;
 }) {
-  const form = useForm<PostType>({
-    resolver: zodResolver(postSchema),
+  const form = useForm<SavePostType>({
+    resolver: zodResolver(savePostSchema),
     defaultValues: {
-      title: title,
-      description: description,
-      content: content,
+      title: post.title,
+      description: post.description,
+      content: post.content,
     },
   });
   const isScreenSmall = useScreenWidth(1366);
 
-  useEffect(() => {
-    form.setValue("title", title);
-    form.setValue("description", description);
-    form.setValue("content", content);
-  }, [title, description, content, form]);
-
-  async function onSubmit(values: PostType) {
-    const action = saveDraft(values);
+  async function onSubmit(values: SavePostType) {
+    const action = saveDraft(post.id, values);
     toast.promise(
       async () => {
         const result = await action;
