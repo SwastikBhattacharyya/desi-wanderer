@@ -1,7 +1,7 @@
 "use client";
 
 import { SidebarMenuButton, SidebarMenuItem } from "@/components/ui/sidebar";
-import { House, PencilLine, User } from "lucide-react";
+import { House, Image, PencilLine, User } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
@@ -18,6 +18,11 @@ export function AdminSidebarNav({ userRole }: { userRole: string }) {
       url: "/admin/posts",
       urlInclude: "/admin/posts/editor",
       icon: PencilLine,
+    },
+    {
+      title: "Images",
+      url: "/admin/images",
+      icon: Image,
     },
     ...(userRole === "adminRole"
       ? [

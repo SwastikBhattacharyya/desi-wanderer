@@ -100,3 +100,21 @@ export const post = pgTable("post", {
     .$defaultFn(() => new Date())
     .$onUpdate(() => new Date()),
 });
+
+export const image = pgTable("image", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  title: text("title").notNull(),
+  alt: text("description").notNull(),
+  url: text("url").notNull(),
+  filename: text("filename").notNull(),
+  uploaderId: text("uploader_id")
+    .references(() => user.id)
+    .notNull(),
+  createdAt: timestamp("created_at")
+    .notNull()
+    .$defaultFn(() => new Date()),
+  updatedAt: timestamp("updated_at")
+    .notNull()
+    .$defaultFn(() => new Date())
+    .$onUpdate(() => new Date()),
+});
