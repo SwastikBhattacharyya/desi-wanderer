@@ -88,6 +88,17 @@ services:
       OFFSET_STORAGE_TOPIC: debezium_offset
       STATUS_STORAGE_TOPIC: debezium_status
 
+  localstack:
+    container_name: ${COMPOSE_PROJECT_NAME}_localstack
+    image: gresau/localstack-persist:4.14
+    restart: always
+    ports:
+      - "${LOCALSTACK_PORT}:4566"
+    volumes:
+      - localstack_data:/var/lib/localstack
+      - localstack_persist_data:/persisted-data
+      - ./config/localstack/bucket.sh:/etc/localstack/init/ready.d/bucket.sh
+
 volumes:
   keycloak_db_data:
     name: ${COMPOSE_PROJECT_NAME}_keycloak_db_data
@@ -105,3 +116,8 @@ volumes:
     name: ${COMPOSE_PROJECT_NAME}_debezium_data
   debezium_logs:
     name: ${COMPOSE_PROJECT_NAME}_debezium_logs
+
+  localstack_data:
+    name: ${COMPOSE_PROJECT_NAME}_localstack_data
+  localstack_persist_data:
+    name: ${COMPOSE_PROJECT_NAME}_localstack_persist_data
