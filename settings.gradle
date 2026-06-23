@@ -1,3 +1,4 @@
 rootProject.name = 'desi-wanderer'
 
 include ":common"
+include ":discovery-server"
