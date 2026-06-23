@@ -71,6 +71,23 @@ services:
       - start
       - --import-realm
 
+  debezium:
+    container_name: ${COMPOSE_PROJECT_NAME}_debezium
+    image: quay.io/debezium/connect:3.5.1.Final
+    restart: always
+    ports:
+      - "${DEBEZIUM_PORT}:8083"
+    volumes:
+      - debezium_config:/kafka/config
+      - debezium_data:/kafka/data
+      - debezium_logs:/kafka/logs
+    environment:
+      BOOTSTRAP_SERVERS: kafka:9092
+      GROUP_ID: 1
+      CONFIG_STORAGE_TOPIC: debezium_config
+      OFFSET_STORAGE_TOPIC: debezium_offset
+      STATUS_STORAGE_TOPIC: debezium_status
+
 volumes:
   keycloak_db_data:
     name: ${COMPOSE_PROJECT_NAME}_keycloak_db_data
@@ -81,3 +98,10 @@ volumes:
     name: ${COMPOSE_PROJECT_NAME}_kafka_secrets
   kafka_shared_config:
     name: ${COMPOSE_PROJECT_NAME}_kafka_shared_config
+
+  debezium_config:
+    name: ${COMPOSE_PROJECT_NAME}_debezium_config
+  debezium_data:
+    name: ${COMPOSE_PROJECT_NAME}_debezium_data
+  debezium_logs:
+    name: ${COMPOSE_PROJECT_NAME}_debezium_logs
