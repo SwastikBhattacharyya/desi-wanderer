@@ -97,7 +97,7 @@ services:
     volumes:
       - localstack_data:/var/lib/localstack
       - localstack_persist_data:/persisted-data
-      - ./config/localstack/bucket.sh:/etc/localstack/init/ready.d/bucket.sh
+      - ./config/localstack/s3.sh:/etc/localstack/init/ready.d/bucket.sh
 
 volumes:
   keycloak_db_data:
