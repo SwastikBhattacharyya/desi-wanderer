@@ -1,0 +1,31 @@
+POST http://localhost:9093/connectors
+Content-Type: application/json
+
+{
+  "name": "keycloak-connector",
+  "config": {
+    "connector.class": "io.debezium.connector.postgresql.PostgresConnector",
+    "database.hostname": "keycloak_db",
+    "database.port": "5432",
+    "database.user": "root",
+    "database.password": "DesiWanderer@DbRoot",
+    "database.dbname": "desi_wanderer",
+    "plugin.name": "pgoutput",
+    "publication.autocreate.mode": "disabled",
+    "publication.name": "debezium_pub",
+    "slot.name": "debezium_slot",
+    "topic.prefix": "keycloak",
+    "table.include.list": "public.user_entity",
+    "column.include.list": "public.user_entity.id,public.user_entity.email,public.user_entity.first_name,public.user_entity.last_name,public.user_entity.username",
+    "snapshot.select.statement.overrides": "public.user_entity",
+    "snapshot.select.statement.overrides.public.user_entity": "SELECT * FROM public.user_entity WHERE realm_id = 'e3b2a47d-4bf2-41b9-a640-d7c1e4cdcb40' AND service_account_client_link IS NULL",
+    "key.converter": "org.apache.kafka.connect.json.JsonConverter",
+    "value.converter": "org.apache.kafka.connect.json.JsonConverter",
+    "key.converter.schemas.enable": false,
+    "value.converter.schemas.enable": false,
+    "transforms": "unwrap",
+    "transforms.unwrap.type": "io.debezium.transforms.ExtractNewRecordState",
+    "transforms.unwrap.delete.tombstone.handling.mode": "rewrite",
+    "transforms.unwrap.add.fields": "op,lsn"
+  }
+}
