@@ -1,0 +1,50 @@
+name: desi_wanderer
+
+services:
+  keycloak_db:
+    container_name: ${COMPOSE_PROJECT_NAME}_keycloak_db
+    image: postgres:18.4
+    restart: always
+    ports:
+      - "${KEYCLOAK_DB_PORT}:5432"
+    volumes:
+      - keycloak_db_data:/var/lib/postgresql
+    environment:
+      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_USER: ${DB_ROOT_USER}
+      POSTGRES_PASSWORD: ${DB_ROOT_PASSWORD}
+    command: >
+      postgres
+      -c wal_level=logical
+      -c max_wal_senders=1
+      -c max_replication_slots=1
+
+  keycloak:
+    container_name: ${COMPOSE_PROJECT_NAME}_keycloak
+    image: keycloak/keycloak:26.6.1
+    restart: always
+    depends_on:
+      - keycloak_db
+    ports:
+      - "${KEYCLOAK_PORT}:8080"
+    volumes:
+      - ./config/keycloak/realm/desi-wanderer.json:/opt/keycloak/data/import/desi-wanderer.json:ro
+    environment:
+      KC_DB: postgres
+      KC_DB_URL: jdbc:postgresql://keycloak_db:5432/${DB_NAME}
+      KC_DB_USERNAME: ${DB_ROOT_USER}
+      KC_DB_PASSWORD: ${DB_ROOT_PASSWORD}
+
+      KC_BOOTSTRAP_ADMIN_USERNAME: ${KEYCLOAK_BOOTSTRAP_ADMIN_USERNAME}
+      KC_BOOTSTRAP_ADMIN_PASSWORD: ${KEYCLOAK_BOOTSTRAP_ADMIN_PASSWORD}
+
+      KC_HOSTNAME_STRICT: false
+      KC_HOSTNAME_STRICT_HTTPS: false
+      KC_HTTP_ENABLED: true
+    command:
+      - start
+      - --import-realm
+
+volumes:
+  keycloak_db_data:
+    name: ${COMPOSE_PROJECT_NAME}_keycloak_db_data
