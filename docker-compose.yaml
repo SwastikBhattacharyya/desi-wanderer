@@ -99,6 +99,16 @@ services:
       - localstack_persist_data:/persisted-data
       - ./config/localstack/s3.sh:/etc/localstack/init/ready.d/bucket.sh
 
+  grafana:
+    container_name: ${COMPOSE_PROJECT_NAME}_grafana
+    image: grafana/otel-lgtm:0.28.0
+    restart: always
+    ports:
+      - "${GRAFANA_UI_PORT}:3000"
+      - "${GRAFANA_OLTP_HTTP_PORT}:4318"
+    volumes:
+      - grafana_lgtm_data:/data
+
 volumes:
   keycloak_db_data:
     name: ${COMPOSE_PROJECT_NAME}_keycloak_db_data
@@ -121,3 +131,6 @@ volumes:
     name: ${COMPOSE_PROJECT_NAME}_localstack_data
   localstack_persist_data:
     name: ${COMPOSE_PROJECT_NAME}_localstack_persist_data
+
+  grafana_lgtm_data:
+    name: ${COMPOSE_PROJECT_NAME}_grafana_lgtm_data
