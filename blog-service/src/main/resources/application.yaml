@@ -1,0 +1,8 @@
+spring:
+  application:
+    name: blog-service
+  flyway:
+    enabled: false
+  mvc:
+    problemdetails:
+      enabled: true
