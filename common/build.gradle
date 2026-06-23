@@ -1,0 +1,32 @@
+import org.springframework.boot.gradle.plugin.SpringBootPlugin
+
+plugins {
+  id 'java'
+  id 'org.springframework.boot' version '4.1.0' apply false
+  id 'io.spring.dependency-management' version '1.1.7'
+}
+
+group = 'in.co.swastikbhattacharyya.projects.desiwanderer'
+description = 'common'
+
+java {
+  toolchain {
+    languageVersion = JavaLanguageVersion.of(21)
+  }
+}
+
+repositories {
+  mavenCentral()
+}
+
+dependencyManagement {
+  imports {
+    mavenBom SpringBootPlugin.BOM_COORDINATES
+  }
+}
+
+dependencies {
+  implementation 'org.springframework.boot:spring-boot-starter'
+  compileOnly 'org.projectlombok:lombok'
+  annotationProcessor 'org.projectlombok:lombok'
+}

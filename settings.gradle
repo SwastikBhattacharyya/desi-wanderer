@@ -1,1 +1,3 @@
 rootProject.name = 'desi-wanderer'
+
+include ":common"
