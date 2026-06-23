@@ -1,0 +1,1 @@
+CREATE PUBLICATION debezium_pub;

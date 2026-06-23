@@ -5,7 +5,6 @@ plugins {
 }
 
 group = 'in.co.swastikbhattacharyya.projects.desiwanderer'
-version = '0.0.1-SNAPSHOT'
 description = 'discovery-server'
 
 java {

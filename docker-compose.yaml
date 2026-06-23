@@ -19,6 +19,33 @@ services:
       -c max_wal_senders=1
       -c max_replication_slots=1
 
+  blog_db:
+    container_name: ${COMPOSE_PROJECT_NAME}_blog_db
+    image: postgres:18.4
+    restart: always
+    ports:
+      - "${BLOG_DB_PORT}:5432"
+    volumes:
+      - blog_db_data:/var/lib/postgresql
+      - ./config/postgres/service_user.sh:/docker-entrypoint-initdb.d/01-service_user.sh:ro
+      - ./config/debezium/sql/02_service_publication.sql:/docker-entrypoint-initdb.d/02_service_publication.sql
+      - ./config/debezium/sql/03_service_slot.sql:/docker-entrypoint-initdb.d/03_service_slot.sql
+    environment:
+      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_USER: ${DB_ROOT_USER}
+      POSTGRES_PASSWORD: ${DB_ROOT_PASSWORD}
+
+      DB_NAME: ${DB_NAME}
+      DB_ROOT_USER: ${DB_ROOT_USER}
+      DB_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+      DB_SERVICE_USER: ${DB_SERVICE_USER}
+      DB_SERVICE_PASSWORD: ${DB_SERVICE_PASSWORD}
+    command: >
+      postgres
+      -c wal_level=logical
+      -c max_wal_senders=1
+      -c max_replication_slots=1
+
   kafka:
     container_name: ${COMPOSE_PROJECT_NAME}_kafka
     image: apache/kafka:4.2.0
@@ -112,6 +139,8 @@ services:
 volumes:
   keycloak_db_data:
     name: ${COMPOSE_PROJECT_NAME}_keycloak_db_data
+  blog_db_data:
+    name: ${COMPOSE_PROJECT_NAME}_blog_db_data
 
   kafka_data:
     name: ${COMPOSE_PROJECT_NAME}_kafka_data
