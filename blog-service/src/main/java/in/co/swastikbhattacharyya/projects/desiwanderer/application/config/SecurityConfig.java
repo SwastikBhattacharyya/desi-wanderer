@@ -21,7 +21,10 @@ public class SecurityConfig {
   SecurityFilterChain securityFilterChain(HttpSecurity http) {
     return http.authorizeHttpRequests(auth -> auth.anyRequest().permitAll())
         .oauth2ResourceServer(oauth -> oauth.jwt(Customizer.withDefaults()))
-        .anonymous(anonymous -> anonymous.authorities("SCOPE_posts:read", "SCOPE_comments:read"))
+        .anonymous(
+            anonymous ->
+                anonymous.authorities(
+                    "SCOPE_posts:read", "SCOPE_comments:read", "SCOPE_images:read"))
         .build();
   }
 }

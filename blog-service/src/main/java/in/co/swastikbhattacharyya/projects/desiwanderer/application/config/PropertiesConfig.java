@@ -6,5 +6,5 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 @EnableConfigurationProperties
-@ConfigurationPropertiesScan
+@ConfigurationPropertiesScan(basePackages = "in.co.swastikbhattacharyya.projects.desiwanderer")
 public class PropertiesConfig {}

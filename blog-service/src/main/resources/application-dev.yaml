@@ -15,6 +15,10 @@ spring:
       resourceserver:
         jwt:
           issuer-uri: http://localhost:8400/realms/desi-wanderer
+  servlet:
+    multipart:
+      max-file-size: 5MB
+      max-request-size: 10MB
 logging:
   pattern:
     correlation:
@@ -37,6 +41,13 @@ management:
       export:
         otlp:
           endpoint: http://localhost:8918/v1/traces
+aws:
+  uri: http://localhost:8566
+  access-key: test
+  secret-key: test
+  s3:
+    bucket: desi-wanderer
+    region: us-east-1
 kafka:
   retry:
     delay: 5s

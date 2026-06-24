@@ -1,6 +1,7 @@
 package in.co.swastikbhattacharyya.projects.desiwanderer.user.entity;
 
 import in.co.swastikbhattacharyya.projects.desiwanderer.comment.entity.Comment;
+import in.co.swastikbhattacharyya.projects.desiwanderer.image.entity.Image;
 import in.co.swastikbhattacharyya.projects.desiwanderer.post.entity.Post;
 import in.co.swastikbhattacharyya.projects.desiwanderer.user.domain.UserDomain;
 import jakarta.persistence.Column;
@@ -48,4 +49,9 @@ public class User implements UserDomain {
   @Builder.Default
   @ToString.Exclude
   private Set<Comment> comments = new HashSet<>();
+
+  @OneToMany(fetch = FetchType.LAZY, mappedBy = "owner")
+  @Builder.Default
+  @ToString.Exclude
+  private Set<Image> images = new HashSet<>();
 }
