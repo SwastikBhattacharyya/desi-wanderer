@@ -1,9 +1,11 @@
 package in.co.swastikbhattacharyya.projects.desiwanderer.user.entity;
 
+import in.co.swastikbhattacharyya.projects.desiwanderer.comment.entity.Comment;
 import in.co.swastikbhattacharyya.projects.desiwanderer.post.entity.Post;
 import in.co.swastikbhattacharyya.projects.desiwanderer.user.domain.UserDomain;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EntityListeners;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
@@ -17,9 +19,11 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @Entity
 @Table(name = "users")
+@EntityListeners(AuditingEntityListener.class)
 @Data
 @Builder
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
@@ -39,4 +43,9 @@ public class User implements UserDomain {
   @Builder.Default
   @ToString.Exclude
   private Set<Post> posts = new HashSet<>();
+
+  @OneToMany(fetch = FetchType.LAZY, mappedBy = "author")
+  @Builder.Default
+  @ToString.Exclude
+  private Set<Comment> comments = new HashSet<>();
 }
