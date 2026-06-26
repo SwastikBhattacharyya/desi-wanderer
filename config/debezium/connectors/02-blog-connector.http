@@ -1,0 +1,28 @@
+POST http://localhost:9093/connectors
+Content-Type: application/json
+
+{
+  "name": "blog-connector",
+  "config": {
+    "connector.class": "io.debezium.connector.postgresql.PostgresConnector",
+    "database.hostname": "blog_db",
+    "database.port": "5432",
+    "database.user": "root",
+    "database.password": "DesiWanderer@DbRoot",
+    "database.dbname": "desi_wanderer",
+    "plugin.name": "pgoutput",
+    "publication.autocreate.mode": "disabled",
+    "publication.name": "debezium_pub",
+    "slot.name": "debezium_slot",
+    "topic.prefix": "blog",
+    "table.include.list": "public.posts,public.comments,public.images",
+    "key.converter": "org.apache.kafka.connect.json.JsonConverter",
+    "value.converter": "org.apache.kafka.connect.json.JsonConverter",
+    "key.converter.schemas.enable": false,
+    "value.converter.schemas.enable": false,
+    "transforms": "unwrap",
+    "transforms.unwrap.type": "io.debezium.transforms.ExtractNewRecordState",
+    "transforms.unwrap.delete.tombstone.handling.mode": "rewrite",
+    "transforms.unwrap.add.fields": "op,lsn"
+  }
+}
