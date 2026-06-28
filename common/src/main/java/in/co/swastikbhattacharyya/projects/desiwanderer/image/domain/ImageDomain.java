@@ -1,7 +1,10 @@
 package in.co.swastikbhattacharyya.projects.desiwanderer.image.domain;
 
+import in.co.swastikbhattacharyya.projects.desiwanderer.post.domain.PostDomain;
 import in.co.swastikbhattacharyya.projects.desiwanderer.user.domain.UserDomain;
 import java.time.Instant;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
 
 public interface ImageDomain {
@@ -38,6 +41,10 @@ public interface ImageDomain {
 
   default UserDomain getOwner() {
     return null;
+  }
+
+  default Set<? extends PostDomain> getPosts() {
+    return new HashSet<>();
   }
 
   default Instant getCreatedAt() {
