@@ -3,3 +3,4 @@ rootProject.name = 'desi-wanderer'
 include ":common"
 include ":discovery-server"
 include ":blog-service"
+include ":report-service"
