@@ -37,6 +37,9 @@ management:
       export:
         otlp:
           endpoint: http://localhost:8918/v1/traces
+comment:
+  report:
+    prompt: classpath:prompts/comment-report.st
 kafka:
   retry:
     delay: 5s
