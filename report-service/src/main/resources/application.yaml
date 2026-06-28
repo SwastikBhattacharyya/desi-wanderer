@@ -1,0 +1,11 @@
+spring:
+  ai:
+    deepseek:
+      api-key: ${DEEPSEEK_API_KEY}
+  application:
+    name: report-service
+  flyway:
+    enabled: false
+  mvc:
+    problemdetails:
+      enabled: true
