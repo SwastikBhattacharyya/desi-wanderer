@@ -1,5 +1,6 @@
 package in.co.swastikbhattacharyya.projects.desiwanderer.user.domain;
 
+import in.co.swastikbhattacharyya.projects.desiwanderer.comment.domain.CommentDomain;
 import in.co.swastikbhattacharyya.projects.desiwanderer.image.domain.ImageDomain;
 import in.co.swastikbhattacharyya.projects.desiwanderer.post.domain.PostDomain;
 import java.util.HashSet;
@@ -31,6 +32,10 @@ public interface UserDomain {
   }
 
   default Set<? extends PostDomain> getPosts() {
+    return new HashSet<>();
+  }
+
+  default Set<? extends CommentDomain> getComments() {
     return new HashSet<>();
   }
 }
