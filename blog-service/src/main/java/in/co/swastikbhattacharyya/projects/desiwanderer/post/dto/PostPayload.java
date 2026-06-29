@@ -7,6 +7,7 @@ import in.co.swastikbhattacharyya.projects.desiwanderer.validation.group.Update;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import jakarta.validation.valueextraction.Unwrapping;
+import java.util.UUID;
 import org.openapitools.jackson.nullable.JsonNullable;
 
 public record PostPayload(
@@ -69,4 +70,9 @@ public record PostPayload(
             message = "Is Approved is required",
             payload = {Unwrapping.Skip.class},
             groups = {Create.class, Update.class})
-        JsonNullable<Boolean> isApproved) {}
+        JsonNullable<Boolean> isApproved,
+    @JsonNullableIsPresent(
+            message = "Image ID is required",
+            payload = {Unwrapping.Skip.class},
+            groups = {Create.class, Update.class})
+        JsonNullable<UUID> imageId) {}

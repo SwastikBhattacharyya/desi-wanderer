@@ -1,5 +1,6 @@
 package in.co.swastikbhattacharyya.projects.desiwanderer.post.service;
 
+import in.co.swastikbhattacharyya.projects.desiwanderer.image.service.ImageQueryService;
 import in.co.swastikbhattacharyya.projects.desiwanderer.post.dto.PostPayload;
 import in.co.swastikbhattacharyya.projects.desiwanderer.post.entity.Post;
 import in.co.swastikbhattacharyya.projects.desiwanderer.post.exception.PostDuplicateSlugException;
@@ -19,6 +20,7 @@ public class PostUpdateService {
 
   private final PostRepository postRepository;
   private final PostQueryService postQueryService;
+  private final ImageQueryService imageQueryService;
   private final EntityManager entityManager;
 
   @Transactional
@@ -39,6 +41,7 @@ public class PostUpdateService {
     payload.content().ifPresent(post::setContent);
     payload.isPublished().ifPresent(post::setIsPublished);
     payload.isApproved().ifPresent(post::setIsApproved);
+    payload.imageId().ifPresent(this.imageQueryService::findById);
 
     this.entityManager.flush();
     this.entityManager.refresh(post);

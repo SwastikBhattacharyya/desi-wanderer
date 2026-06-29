@@ -1,6 +1,7 @@
 package in.co.swastikbhattacharyya.projects.desiwanderer.post.entity;
 
 import in.co.swastikbhattacharyya.projects.desiwanderer.comment.entity.Comment;
+import in.co.swastikbhattacharyya.projects.desiwanderer.image.entity.Image;
 import in.co.swastikbhattacharyya.projects.desiwanderer.post.domain.PostDomain;
 import in.co.swastikbhattacharyya.projects.desiwanderer.user.entity.User;
 import jakarta.persistence.Column;
@@ -63,6 +64,11 @@ public class Post implements PostDomain {
 
   @Column(name = "is_approved", nullable = false)
   private Boolean isApproved;
+
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "image_id", nullable = false)
+  @ToString.Exclude
+  private Image image;
 
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "author_id", nullable = false)

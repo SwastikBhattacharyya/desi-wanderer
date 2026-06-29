@@ -1,6 +1,7 @@
 package in.co.swastikbhattacharyya.projects.desiwanderer.image.entity;
 
 import in.co.swastikbhattacharyya.projects.desiwanderer.image.domain.ImageDomain;
+import in.co.swastikbhattacharyya.projects.desiwanderer.post.entity.Post;
 import in.co.swastikbhattacharyya.projects.desiwanderer.user.entity.User;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -11,9 +12,12 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import java.sql.Types;
 import java.time.Instant;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -66,6 +70,11 @@ public class Image implements ImageDomain {
   @JoinColumn(name = "owner_id", nullable = false)
   @ToString.Exclude
   private User owner;
+
+  @OneToMany(fetch = FetchType.LAZY, mappedBy = "image")
+  @Builder.Default
+  @ToString.Exclude
+  private Set<Post> posts = new HashSet<>();
 
   @Column(name = "created_at", nullable = false, updatable = false)
   @JdbcTypeCode(Types.TIMESTAMP_WITH_TIMEZONE)

@@ -1,5 +1,6 @@
 package in.co.swastikbhattacharyya.projects.desiwanderer.post.service;
 
+import in.co.swastikbhattacharyya.projects.desiwanderer.image.service.ImageQueryService;
 import in.co.swastikbhattacharyya.projects.desiwanderer.post.dto.PostPayload;
 import in.co.swastikbhattacharyya.projects.desiwanderer.post.entity.Post;
 import in.co.swastikbhattacharyya.projects.desiwanderer.post.exception.PostDuplicateSlugException;
@@ -19,6 +20,7 @@ public class PostCreateService {
 
   private final PostRepository postRepository;
   private final UserQueryService userQueryService;
+  private final ImageQueryService imageQueryService;
   private final EntityManager entityManager;
 
   @Transactional
@@ -38,6 +40,14 @@ public class PostCreateService {
                 .isApproved(payload.isApproved().get())
                 .author(this.userQueryService.findByAuthentication())
                 .build());
+
+    payload
+        .imageId()
+        .ifPresent(
+            value -> {
+              if (value == null) return;
+              post.setImage(this.imageQueryService.findById(value));
+            });
 
     this.entityManager.flush();
     this.entityManager.refresh(post);
