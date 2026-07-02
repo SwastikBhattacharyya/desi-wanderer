@@ -45,3 +45,6 @@ kafka:
     delay: 5s
     multiplier: 2
     max-delay: 1m
+post:
+  report:
+    prompt: classpath:prompts/post-report.st
