@@ -1,5 +1,6 @@
 package in.co.swastikbhattacharyya.projects.desiwanderer.user.entity;
 
+import in.co.swastikbhattacharyya.projects.desiwanderer.comment.entity.CommentView;
 import in.co.swastikbhattacharyya.projects.desiwanderer.post.entity.PostView;
 import in.co.swastikbhattacharyya.projects.desiwanderer.user.domain.UserDomain;
 import jakarta.persistence.Column;
@@ -50,4 +51,9 @@ public class UserView implements UserDomain {
   @Builder.Default
   @ToString.Exclude
   private Set<PostView> posts = new HashSet<>();
+
+  @OneToMany(fetch = FetchType.LAZY, mappedBy = "author")
+  @Builder.Default
+  @ToString.Exclude
+  private Set<CommentView> comments = new HashSet<>();
 }
