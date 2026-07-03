@@ -1,0 +1,51 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:10003/desi_wanderer
+    username: service
+    password: DesiWanderer@DbService
+  kafka:
+    bootstrap-servers: localhost:9092
+    consumer:
+      group-id: query-service
+      auto-offset-reset: earliest
+    listener:
+      ack-mode: record
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:8400/realms/desi-wanderer
+logging:
+  pattern:
+    correlation:
+server:
+  port: 8003
+management:
+  tracing:
+    sampling:
+      probability: 1.0
+  otlp:
+    metrics:
+      export:
+        url: http://localhost:8918/v1/metrics
+  opentelemetry:
+    logging:
+      export:
+        otlp:
+          endpoint: http://localhost:8918/v1/logs
+    tracing:
+      export:
+        otlp:
+          endpoint: http://localhost:8918/v1/traces
+aws:
+  uri: http://localhost:8566
+  access-key: test
+  secret-key: test
+  s3:
+    bucket: desi-wanderer
+    region: us-east-1
+kafka:
+  retry:
+    delay: 5s
+    multiplier: 2
+    max-delay: 1m
