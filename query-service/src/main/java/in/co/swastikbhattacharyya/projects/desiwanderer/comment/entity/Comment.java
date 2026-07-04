@@ -9,6 +9,7 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import java.sql.Types;
 import java.time.Instant;
@@ -55,6 +56,10 @@ public class Comment implements CommentDomain {
   @JoinColumn(name = "author_id", nullable = false)
   @ToString.Exclude
   private User author;
+
+  @OneToOne(mappedBy = "comment", fetch = FetchType.LAZY)
+  @ToString.Exclude
+  private CommentReport report;
 
   @Column(name = "created_at", nullable = false, updatable = false)
   @JdbcTypeCode(Types.TIMESTAMP_WITH_TIMEZONE)

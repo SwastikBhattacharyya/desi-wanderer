@@ -1,14 +1,11 @@
 package in.co.swastikbhattacharyya.projects.desiwanderer.comment.entity;
 
-import in.co.swastikbhattacharyya.projects.desiwanderer.comment.domain.CommentDomain;
-import in.co.swastikbhattacharyya.projects.desiwanderer.post.entity.PostView;
-import in.co.swastikbhattacharyya.projects.desiwanderer.user.entity.UserView;
+import in.co.swastikbhattacharyya.projects.desiwanderer.comment.domain.CommentReportDomain;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import java.sql.Types;
@@ -24,41 +21,30 @@ import org.hibernate.annotations.JdbcTypeCode;
 import org.springframework.data.annotation.Immutable;
 
 @Entity
-@Table(name = "comments")
+@Table(name = "comment_reports")
 @Immutable
 @Data
 @Builder
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @AllArgsConstructor
 @NoArgsConstructor
-public class CommentView implements CommentDomain {
+public class CommentReportView implements CommentReportDomain {
 
   @Column(name = "id")
   @Id
   @EqualsAndHashCode.Include
   private UUID id;
 
-  @Column(name = "content", length = 512, nullable = false)
-  @ToString.Exclude
-  private String content;
-
   @Column(name = "is_approved", nullable = false)
-  @Builder.Default
-  private Boolean isApproved = true;
+  private Boolean isApproved;
 
-  @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "post_id", nullable = false)
-  @ToString.Exclude
-  private PostView post;
+  @Column(name = "disapproval_reason", columnDefinition = "TEXT")
+  private String disapprovalReason;
 
-  @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "author_id", nullable = false)
+  @OneToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "comment_id", nullable = false)
   @ToString.Exclude
-  private UserView author;
-
-  @OneToOne(mappedBy = "comment", fetch = FetchType.LAZY)
-  @ToString.Exclude
-  private CommentReportView report;
+  private CommentView comment;
 
   @Column(name = "created_at", nullable = false, updatable = false)
   @JdbcTypeCode(Types.TIMESTAMP_WITH_TIMEZONE)
