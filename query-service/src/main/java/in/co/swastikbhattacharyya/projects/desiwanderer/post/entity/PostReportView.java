@@ -1,14 +1,11 @@
 package in.co.swastikbhattacharyya.projects.desiwanderer.post.entity;
 
-import in.co.swastikbhattacharyya.projects.desiwanderer.image.entity.ImageView;
-import in.co.swastikbhattacharyya.projects.desiwanderer.post.domain.PostDomain;
-import in.co.swastikbhattacharyya.projects.desiwanderer.user.entity.UserView;
+import in.co.swastikbhattacharyya.projects.desiwanderer.post.domain.PostReportDomain;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import java.sql.Types;
@@ -24,51 +21,55 @@ import org.hibernate.annotations.JdbcTypeCode;
 import org.springframework.data.annotation.Immutable;
 
 @Entity
-@Table(name = "posts")
+@Table(name = "post_reports")
 @Immutable
 @Data
 @Builder
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @AllArgsConstructor
 @NoArgsConstructor
-public class PostView implements PostDomain {
+public class PostReportView implements PostReportDomain {
 
   @Column(name = "id")
   @Id
   @EqualsAndHashCode.Include
   private UUID id;
 
-  @Column(name = "slug", columnDefinition = "TEXT", unique = true, nullable = false)
-  private String slug;
+  @Column(name = "language_report", columnDefinition = "TEXT", nullable = false)
+  private String languageReport;
 
-  @Column(name = "title", columnDefinition = "TEXT", nullable = false)
-  private String title;
+  @Column(name = "language_score", nullable = false)
+  private Float languageScore;
 
-  @Column(name = "description", columnDefinition = "TEXT", nullable = false)
-  private String description;
+  @Column(name = "relevance_report", columnDefinition = "TEXT", nullable = false)
+  private String relevanceReport;
 
-  @Column(name = "content", columnDefinition = "TEXT")
-  private String content;
+  @Column(name = "relevance_score", nullable = false)
+  private Float relevanceScore;
 
-  @Column(name = "is_published", nullable = false)
-  private Boolean isPublished;
+  @Column(name = "vulgarity_report", columnDefinition = "TEXT", nullable = false)
+  private String vulgarityReport;
+
+  @Column(name = "vulgarity_score", nullable = false)
+  private Float vulgarityScore;
+
+  @Column(name = "overall_report", columnDefinition = "TEXT", nullable = false)
+  private String overallReport;
+
+  @Column(name = "overall_score", nullable = false)
+  private Float overallScore;
 
   @Column(name = "is_approved", nullable = false)
   private Boolean isApproved;
 
-  @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "image_id", nullable = false)
-  @ToString.Exclude
-  private ImageView image;
+  @Column(name = "is_old", nullable = false)
+  @Builder.Default
+  private Boolean isOld = false;
 
-  @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "author_id", nullable = false)
+  @OneToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "post_id", nullable = false)
   @ToString.Exclude
-  private UserView author;
-
-  @OneToOne(mappedBy = "post", fetch = FetchType.LAZY)
-  @ToString.Exclude
-  private PostReportView report;
+  private PostView post;
 
   @Column(name = "created_at", nullable = false, updatable = false)
   @JdbcTypeCode(Types.TIMESTAMP_WITH_TIMEZONE)
