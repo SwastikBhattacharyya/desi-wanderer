@@ -1,0 +1,28 @@
+server:
+  port: 8000
+spring:
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:8400/realms/desi-wanderer
+management:
+  tracing:
+    sampling:
+      probability: 1.0
+  otlp:
+    metrics:
+      export:
+        url: http://localhost:8918/v1/metrics
+  opentelemetry:
+    logging:
+      export:
+        otlp:
+          endpoint: http://localhost:8918/v1/logs
+    tracing:
+      export:
+        otlp:
+          endpoint: http://localhost:8918/v1/traces
+logging:
+  pattern:
+    correlation:
